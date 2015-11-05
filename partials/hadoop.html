@@ -1,106 +1,1463 @@
  <!-- Page Content -->
-    <div class="container">
+<div class="container" id ="doclayout" style="margin-top:30px;">
+    <div class="row">
 
-        <!-- Page Heading/Breadcrumbs -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">Hadoop
-                    <small>Tutorials</small>
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a>
-                    </li>
-                    <li class="active">Hadoop</li>
+        <div class="col-md-2">
+            <aside class="sidebar">
+
+                <ul class="nav">
+                    <li class="heading">Hadoop</li>
+                    <li><a is-active-nav href="#introHadoop">Introduction</a></li>
+                </ul>
+                <ul class="nav">
+                    <li class="heading">Installation</li>
+                    <li><a is-active-nav href="#single-nodeInstallation">Single-node Installation</a></li>
+                    <li><a is-active-nav href="#multi-nodeInstallation">Multi-node Installation</a></li>
+                </ul>
+
+
+                <ul class="nav nav-list primary push-bottom left-menu special">
+                    <li class="heading">HDFS</li>
+                    <li><a href="#hdfsIntro">Introduction</a></li>
+                    <li><a href="#hdfsCommands">Try HDFS Commands</a></li>
+                    <li><a href="#javaApi">Java-API</a></li>
+                </ul>
+
+            </aside>
+        </div>
+
+
+        <div class="content">
+            <div class="col-md-7" style="margin-top:-18px;">
+
+            <div id="introHadoop" style="display:block;margin-top: -50px;"><br><br>
+                <h1>Hadoop</h1>
+                <hr />
+                <p><strong>Hadoop :Meeting  Big data Challenge</strong></p>
+                <p>Apache Hadoop meets the challenges of Big Data by simplifying the implementation of<strong> data-intensive, highly parallel distributed</strong>  applications.</p>
+                <p>Hadoop is different from previous distributed approaches in the following ways:</p>
+                <ul>
+                    <li>Data is distributed in advance.</li>
+                    <li>Data is replicated throughout a cluster of computers for reliability and availability.</li>
+                    <li>Data processing tries to occur where the data is stored, thus eliminating bandwidth bottlenecks.</li>
+                </ul>
+
+                <p>Hadoop provides a powerful mechanism for data analytics, which consists of the following:</p>
+                <ul>
+                    <li>Vast amount of storage</li>
+                    <li>Distributed processing with fast data access</li>
+                    <li>Reliability, failover, and scalability</li>
+                </ul>
+
+                <p><strong>Data Science in the Business World</strong></p>
+                <p>The capability of Hadoop to store and process huge amounts of data is frequently associated with “data science” .Although the term was introduced by Peter Naur in the 1960s, it did not get wide acceptance until recently.</p>
+                <p>Business analysts study patterns in existing business operations to improve them.
+The goal of data science is to extract meaning from data. The work of data scientists is based on math, statistical analysis, pattern recognition, machine learning,high-performance computing,data warehousing, and much more. They analyze information to look for trends, statistics, and new business possibilities based on collected information.</p>
+                <p>Businesses are using Hadoop for solving business problems, with a few notable examples:</p>
+
+                    <p>
+                        <strong> Enhancing fraud detection for banks and credit card companies</strong> — Companies are utilizing Hadoop to detect transaction fraud. By providing analytics on large clusters of commodity hardware, banks are using Hadoop, applying analytic models to a full set of transactions for their clients, and providing near-real-time fraud-in-progress detection.
+                    </p>
+                    <p><strong> Social media marketing analysis</strong> — Companies are currently using Hadoop for brand
+management, marketing campaigns, and brand protection. By monitoring, collecting, and aggregating data from various Internet sources such as blogs, boards, news feeds, tweets, and social media, companies are using Hadoop to extract and aggregate information about their products, services, and competitors, discovering patterns and revealing upcoming trends important for understanding their business.</p> 
+                    <p><strong>Shopping pattern analysis for retail product placement</strong> — Businesses in the retail industry are using Hadoop to determine products most appropriate to sell in a particular store based on the store’s location and the shopping patterns of the population around it.</p>
+                    <p><strong> Traffic pattern recognition for urban development</strong> — Urban development often relies
+on traffic patterns to determine requirements for road network expansion. By monitoring
+traffic during different times of the day and discovering patterns, urban developers can
+determine traffic bottlenecks, which allow them to decide whether additional streets/street lanes are required to avoid traffic congestions during peak hours.</p>
+                    <p><strong>Content optimization and engagement</strong> — Companies are focusing on optimizing content for rendering on different devices supporting different content formats. Many media companies require that a large amount of content be processed in different formats. Also, content engagement models must be mapped for feedback and enhancements.</p>
+                    <p><strong>Network analytics and mediation</strong> — Real-time analytics on a large amount of data
+generated in the form of usage transaction data, network performance data, cell-site
+information, device-level data, and other forms of back office data is allowing companies to reduce operational expenses, and enhance the user experience on networks.</p>
+                    <p><strong>Large data transformation</strong> — The New York Times needed to generate PDF files for 11
+million articles (every article from 1851 to 1980) in the form of images scanned from the
+original paper. Using Hadoop, the newspaper was able to convert 4 TB of scanned articles
+to 1.5 TB of PDF documents in 24 hours.</p><br>
+                    <p><strong>THE HADOOP ECOSYSTEM</strong></p>
+                    <p>Hadoop should be classified as an ecosystem comprised of many components that range from data storage, to data integration, to data processing, to specialized tools for data analysts.</p>
+                    <img src="c:/hhdsdd.png"><br>
+                    <p>Hadoop’s ecosystem consists of the following:</p>
+                    <p><strong>HDFS</strong> — A foundational component of the Hadoop ecosystem is the Hadoop Distributed
+File System (HDFS). HDFS is the mechanism by which a large amount of data can be
+distributed over a cluster of computers, and data is written once, but read many times for
+analytics. It provides the foundation for other tools, such as HBase.</p>
+                    <p><strong>MapReduce </strong> — Hadoop’s main execution framework is MapReduce, a programming model  for distributed, parallel data processing, breaking jobs into mapping phases and reduce phases (thus the name). Developers write MapReduce jobs for Hadoop, using data stored in HDFS for fast data access. Because of the nature of how MapReduce works, Hadoop brings the processing to the data in a parallel fashion, resulting in fast implementation.</p>
+                    <p><strong>HBase</strong> — A column-oriented NoSQL database built on top of HDFS, HBase is used for fast read/write access to large amounts of data. HBase uses Zookeeper for its management to ensure that all of its components are up and running.</p>
+                    <p><strong>Zookeeper</strong> — Zookeeper is Hadoop’s distributed coordination service. Designed to run over a cluster of machines, it is a highly available service used for the management of Hadoop operations, and many components of Hadoop depend on it.</p>
+                    <p><strong>Oozie</strong> — A scalable workflow system, Oozie is integrated into the Hadoop stack, and is
+used to coordinate execution of multiple MapReduce jobs. It is capable of managing a
+significant amount of complexity, basing execution on external events that include timing
+and presence of required data.</p>
+                    <p><strong>Pig</strong> — An abstraction over the complexity of MapReduce programming, the Pig platform
+includes an execution environment and a scripting language (Pig Latin) used to analyze
+Hadoop data sets. Its compiler translates Pig Latin into sequences of MapReduce programs.</p>
+                    <p><strong>Hive</strong> — An SQL-like, high-level language used to run queries on data stored in Hadoop, Hive enables developers not familiar with MapReduce to write data queries that are translated into MapReduce jobs in Hadoop. Like Pig, Hive was developed as an abstraction layer, but geared more toward database analysts more familiar with SQL than Java programming.</p><br>
+                    <p>The Hadoop ecosystem also contains several frameworks for integration with the rest of the enterprise:</p>
+                    <p><strong>Sqoop</strong> — is a connectivity tool for moving data between relational databases and data
+warehouses and Hadoop. Sqoop leverages database to describe the schema for the imported/exported data and MapReduce for parallelization operation and fault tolerance.</p>
+                    <p><strong>Flume</strong> — is a distributed, reliable, and highly available service for efficiently collecting,
+aggregating, and moving large amounts of data from individual machines to HDFS. It
+is based on a simple and flexible architecture, and provides a streaming of data flows. It
+leverages a simple extensible data model, allowing you to move data from multiple machines within an enterprise into Hadoop.</p>
+                    <p>Hadoop’s ecosystem is growing to provide newer capabilities and components, such as the following:</p>
+                    <p><strong>Whirr</strong> — This is a set of libraries that allows users to easily spin-up Hadoop clusters on top
+of Amazon EC2, Rackspace, or any virtual infrastructure.</p>
+                    <p><strong>Mahout</strong> — This is a machine-learning and data-mining library that provides MapReduce
+implementations for popular algorithms used for clustering, regression testing, and
+statistical modeling.</p>
+                    <p><strong>BigTop</strong> — This is a formal process and framework for packaging and interoperability
+testing of Hadoop’s sub-projects and related components.</p>
+                    <p><strong>Ambari</strong> — This is a project aimed at simplifying Hadoop management by providing support for provisioning, managing, and monitoring Hadoop clusters.</p>
+                <hr />
+            </div>
+
+
+            <div id="single-nodeInstallation" style="display:block;margin-top: -50px;"><br><br>
+                <h1>Single-node installation</h1>
+                <hr />
+                <p>The goal of the document is to get Hadoop version 2.0.3-alpha up and running on a single node cluster.</p>
+
+                <h2>Introduction</h2> 
+                <p>Hadoop is a framework written in Java for running applications on large clusters of commodity hardware and incorporates features similar to those of the Google File System (GFS) and of the MapReduce computing paradigm.</p>
+                <p>The tutorial has been tested with the following software versions:</p>
+                <ol>
+                    <li>Ubuntu Linux 12.04 (You can download Ubuntu 12.04 from <a href="http://releases.ubuntu.com/12.04/">here</a>)</li>
+                    <li>JDK 1.7 (Will also work with JDK 1.6)</li>
                 </ol>
-            </div>
-        </div>
-        <!-- /.row -->
 
-        <!-- Content Row -->
-        <div class="row">
-            <div class="col-lg-12">
+                <p>Apache Hadoop has undergone a complete overhaul with vrsion 2, (MRv2) also called as YARN(Yet Another Negotiator) YARN architecture splits the function of JobTracker into Resource Manager and per Application Master. NodeManager is similar to the Task tracker, with the task being abstracted as container. Hadoop 2.0 also comes with HDFS federation and High Avialble for namenode.</p>
+                <p>The tutorial has been tested with the following software versions:</p>
+                <ol>
+                    <li>Ubuntu Linux 12.04 (<a href="http://releases.ubuntu.com/12.04/">download Ubuntu</a>)</li>
+                    <li>JDK 1.7 ( <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">download JDK</a>). The same tutorial works on JDK1.6 as well.</li>
+                </ol>
+                <h2>Prerequisites</h2>
+                <p>A system with 2 GB RAM and Ubuntu 12.04 up and running.</p>
+                <hr />
+
+
+                <h2>Installation</h2>
+                <p><strong>Create Dedicated User</strong></p>
+                <p>Create a user ‘gpuser’ and group ‘gp’. We will be running Hadoop with this userid</p>
+
+                <div class="codebox">
+                    <pre>
+$sudo addgroup gp
+$sudo adduser --ingroup gp gpuser
+                    </pre>
+                </div>
+                <p><strong>Install JDK</strong></p>
+                <p>Ignore this step if JDK is already installed. If not, <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">Download JDK </a>and install.</p>
+                <p>Login with gpuser to proceed with further installation steps.</p>
+                <p>Set JAVA_HOME by adding the following lines at the end of <strong>.bashrc</strong> file located in gpuser home directory /home/gpuser</p>
+                <div class="codebox">
+                    <pre>
+export JAVA_HOME=$HOME/java/jdk1.7.0_17
+export PATH=$PATH:$JAVA_HOME/bin
+                    </pre>
+                </div>
+                <p>Verify the Java installation with the following command:</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~$source ~/.bashrc
+gpuser@ubuntu:~$java -version
+                    </pre>
+                </div>
+                <p>You should see java version 1.7.* printed on the console.</p>
+                <p>Download and Extract Hadoop</p>
+                <p>Download <a href="http://apache.techartifact.com/mirror/hadoop/common/hadoop-2.0.3-alpha/">Hadoop</a> version 2.0.3</p>
+                <p>Extract hadoop at the home directory using the following command.</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~$ tar -xvzf hadoop-2.0.3-alpha.tar.gz
+                    </pre>
+                </div>
+
+                <p><strong>Setup SSH</strong></p>
+                <p>Hadoop requires SSH access and manage its nodes running hadoop. We will configure SSH to connect to localhost without a password</p>
+                <p><strong>Install SSH</strong></p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~$sudo apt-get install ssh
+gpuser@ubuntu:~$sudo apt-get install rsync
+                    </pre>
+                </div>
+
+                <p><strong>Generate public/private RSA key pairs using the following command.</strong></p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~$ ssh-keygen -t rsa -P ""
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/gpuser/.ssh/id_rsa):
+Created directory '/home/gpuser/.ssh'.
+Your identification has been saved in /home/gpuser/.ssh/id_rsa.
+Your public key has been saved in /home/gpuser/.ssh/id_rsa.pub.
+The key fingerprint is:
+3c:f7:ca:f2:49:a7:05:ee:90:66:05:0f:7b:a9:63:fc gpuser@ubuntu
+The key's randomart image is:
++--[ RSA 2048]----+
+|                 |
+|                 |
+|        o        |
+|       . = .     |
+|        S B      |
+|       . O o     |
+|        X o +    |
+|       +.B *     |
+|         oE      |
++-----------------+
+                    </pre>
+                </div>
+
+                <p>Press Enter to save the key in the default location.</p>
+                <p>Enable ssh to the local machine using the following command.</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~$ cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+                    </pre>
+                </div>
+
+                <ul>
+                    <li>Finally test the ssh setup by connecting to the local machine with the gpuser user.</li>
+                </ul>
+
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~$ ssh localhost
+ 
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is ca:96:1c:5a:38:f8:9f:99:45:d4:57:82:3c:1b:64:b7.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
+ 
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+ 
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+ 
+Welcome to Ubuntu 12.10 (GNU/Linux 3.5.0-17-generic i686)
+ 
+ * Documentation:  https://help.ubuntu.com/
+                    </pre>
+                </div>
+
+                <p><strong>Configure Hadoop</strong></p>
+                <p>Hadoop requires the following environment variables to be set correctly</p>
+                <ul>
+                    <li>
+                        HADOOP environement variables
+                    </li>
+                </ul>
+                <p>Open .bashrc file in the home folder and add the following lines at the end</p>
+
+                <div class="codebox">
+                    <pre>
+export HADOOP_HOME=$HOME/hadoop-2.0.3-alpha
+export HADOOP_MAPRED_HOME=$HOME/hadoop-2.0.3-alpha
+export HADOOP_COMMON_HOME=$HOME/hadoop-2.0.3-alpha
+export HADOOP_HDFS_HOME=$HOME/hadoop-2.0.3-alpha
+export YARN_HOME=$HOME/hadoop-2.0.3-alpha
+export HADOOP_CONF_DIR=$HOME/hadoop-2.0.3-alpha/etc/hadoop
+export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin
+                    </pre>
+                </div>
+
+                <ul>
+                    <li>
+                        Source the variables using the following command
+                    </li>
+                </ul>
+
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu$source ~/.bashrc
+                    </pre>
+                </div>
+
+                <ul>
+                    <li>Update Configuration Files</li>
+                </ul>
+                <p>Hadoop configration files at located at $HADOOP_HOME/etc/hadoop. Update the configuration files with the following entries respectively.</p>
+                 <p><strong>yarn-site.xml</strong></p>
+                <div class="codebox">
                
-               <ul>
-                    <li class="toctree-l1"><a class="reference internal">Introduction</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="#/mapreduce">MapReduce</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="">Hadoop</a></li>
-                    </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="">Installation</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="tutorial.html#install-sphinx">Single Node installation</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="tutorial.html#setting-up-the-documentation-sources">Multi Node Installation</a></li>
-                    </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="invocation.html">HDFS</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="invocation.html#structure-options">About HDFS</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="invocation.html#project-basic-options">HDFS Read and Write</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="invocation.html#project-basic-options">HDFS Commands</a></li>
-                    </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="config.html">MapReduce</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="config.html#general-configuration">About MapReduce</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="config.html#project-information">Development Environment</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="config.html#options-for-internationalization">Data Types</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="config.html#options-for-apple-help-output">Basic MapReduce</a></li>
-                    </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="intl.html">Advanced MapReduce</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="intl.html#sphinx-internationalization-details">Business Counts</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="intl.html#translating-with-sphinx-intl">Business Reviews</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="intl.html#using-transifex-service-for-team-translation">Business Ratings</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="intl.html#contributing-to-sphinx-reference-translation">Review Ratings</a></li>
-                    </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="theming.html">Apache Hive</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="theming.html#using-a-theme">About Hive</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="theming.html#builtin-themes">Run Modes</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="theming.html#creating-themes">Hive Basics</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="theming.html#creating-themes">HQL Part 1</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="theming.html#creating-themes">HQL Part 2</a></li>
-                    </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="templating.html">Apache Pig</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="templating.html#do-i-need-to-use-sphinx-s-templates-to-produce-html">Installation</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="templating.html#jinja-sphinx-templating-primer">Pig Queries - Part 1</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="templating.html#working-with-the-builtin-templates">Pig Queries - Part 2</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="templating.html#working-with-the-builtin-templates">Max Temperature</a></li>
+ <pre>
+<code>&lt;configuration&gt;</code>
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+        &lt;value&gt;mapreduce.shuffle&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;
+        &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</pre>
+                </div>
 
-                    </ul>
-                    </li>
-                  
-                    <li class="toctree-l1"><a class="reference internal" href="extdev/index.html">Apache HBase</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="extdev/index.html#extension-metadata">Installation</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="extdev/index.html#apis-used-for-writing-extensions">CRUD Operations</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="extdev/index.html#apis-used-for-writing-extensions">Hive and HBase</a></li>
+                <p><b>Note:</b>In case of hadoop 2.2.x installation replace <b>mapreduce.shuffle</b> with <b>mapreduce_shuffle</b></p>
+                <p><strong>core-site.xml</strong></p>
+<div class="codebox">
+<pre>
+&lt;configuration&gt;
+    &lt;property&gt;
+    &lt;name&gt;fs.default.name&lt;/name&gt;
+    &lt;value&gt;hdfs://localhost:9000&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</pre>
+</div>
+<p><strong>hdfs-site.xml</strong></p>
+<div class="codebox">
+<pre>
+&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.replication&lt;/name&gt;
+        &lt;value&gt;1&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+        &lt;value&gt;file:/home/gpuser/data/namenode&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+       &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+       &lt;value&gt;file:/home/gpuser/data/datanode&lt;/value&gt;
+   &lt;/property&gt;
+&lt;/configuration&gt;
+</pre>
+</div>
 
-                    </ul>
+<p>If this file does not exist, create it and paste the content provided below:</p>
+<p><strong>mapred-site.xml</strong></p>
+<div class="codebox">
+<pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+        &lt;value&gt;yarn&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</pre>
+</div>
+
+                <hr />
+
+                <h2>Run Hadoop</h2>
+                <p><strong>Initialize the Hadoop File system</strong></p>
+                <p>Namenode needs to be initialized before starting with Hadoop File System. Once intialized, Namenode creates a unique namespace id for this instance of the Hadoop File System.</p>
+                <ul>
+                    <li>Create the <em>Storage Directories</em> for HDFS</li>
+                </ul>
+                <p>Storage Directories for HDFS</p>
+                <div class="codebox">
+                    <pre>
+$mkdir -p $HOME/data/namenode
+$mkdir -p $HOME/data/datanode
+                    </pre>
+                </div>
+
+                <p>Initialize the filesystem</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ bin/hadoop namenode -format
+ 
+o/p:
+ 
+Formatting using clusterid: CID-8b844021-d1ea-4b0a-a625-d17dcc133299
+13/04/04 02:07:39 INFO util.HostsFileReader: Refreshing hosts (include/exclude) list
+13/04/04 02:07:39 INFO blockmanagement.DatanodeManager: dfs.block.invalidate.limit=1000
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: dfs.block.access.token.enable=false
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: defaultReplication         = 1
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: maxReplication             = 512
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: minReplication             = 1
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: maxReplicationStreams      = 2
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: shouldCheckForEnoughRacks  = false
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: replicationRecheckInterval = 3000
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: encryptDataTransfer        = false
+13/04/04 02:07:39 INFO namenode.FSNamesystem: fsOwner             = gpuser (auth:SIMPLE)
+13/04/04 02:07:39 INFO namenode.FSNamesystem: supergroup          = supergroup
+13/04/04 02:07:39 INFO namenode.FSNamesystem: isPermissionEnabled = true
+13/04/04 02:07:39 INFO namenode.FSNamesystem: HA Enabled: false
+13/04/04 02:07:39 INFO namenode.FSNamesystem: Append Enabled: true
+13/04/04 02:07:40 INFO namenode.NameNode: Caching file names occuring more than 10 times
+13/04/04 02:07:40 INFO namenode.FSNamesystem: dfs.namenode.safemode.threshold-pct = 0.9990000128746033
+13/04/04 02:07:40 INFO namenode.FSNamesystem: dfs.namenode.safemode.min.datanodes = 0
+13/04/04 02:07:40 INFO namenode.FSNamesystem: dfs.namenode.safemode.extension     = 30000
+13/04/04 02:07:41 INFO common.Storage: Storage directory /home/gpuser/data/namenode has been successfully formatted.
+13/04/04 02:07:41 INFO namenode.FSImage: Saving image file /home/gpuser/data/namenode/current/fsimage.ckpt_0000000000000000000 using no compression
+13/04/04 02:07:41 INFO namenode.FSImage: Image file of size 121 saved in 0 seconds.
+13/04/04 02:07:41 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid &gt;= 0
+13/04/04 02:07:41 INFO util.ExitUtil: Exiting with status 0
+13/04/04 02:07:41 INFO namenode.NameNode: SHUTDOWN_MSG:
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at ubuntu/127.0.1.1
+************************************************************
+ 
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$
+                    </pre>
+                </div>
+
+                <p><strong>Start Hadoop File System</strong></p>
+                <p>Start Namenode</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ sbin/hadoop-daemon.sh start namenode
+starting namenode, logging to /home/gpuser/hadoop-2.0.3-alpha/logs/hadoop-gpuser-namenode-ubuntu.out
+                    </pre>                    
+                </div>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ sbin/hadoop-daemon.sh start datanode
+starting datanode, logging to /home/gpuser/hadoop-2.0.3-alpha/logs/hadoop-gpuser-datanode-ubuntu.out
+                    </pre>                    
+                </div>
+                <p>Verify that the Namenode and Datanode are running using jps</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ jps
+18509 Jps
+17107 NameNode
+17170 DataNode
+                    </pre>                    
+                </div>
+
+                <p><strong>Start Yarn Daemons</strong></p>
+                <p>Start Resource Manager</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ sbin/yarn-daemon.sh start resourcemanager
+starting resourcemanager, logging to /home/gpuser/hadoop-2.0.3-alpha/logs/yarn-gpuser-resourcemanager-ubuntu.out
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ jps
+18509 Jps
+17107 NameNode
+17170 DataNode
+17252 ResourceManager
+                    </pre>                    
+                </div>
+                <p>Start Node Manager</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ sbin/yarn-daemon.sh start nodemanager
+starting nodemanager, logging to /home/gpuser/hadoop-2.0.3-alpha/logs/yarn-gpuser-nodemanager-ubuntu.out
+                    </pre>                    
+                </div>
+
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$jps
+18509 Jps
+17107 NameNode
+17170 DataNode
+17252 ResourceManager
+17309 NodeManager
+                    </pre>                    
+                </div>
+
+                <p>Start Job History Server</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ sbin/mr-jobhistory-daemon.sh start historyserver
+ 
+starting historyserver, logging to /home/gpuser/hadoop-2.0.3-alpha/logs/mapred-gpuser-historyserver-ubuntu.out
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$jps
+18509 Jps
+17107 NameNode
+17170 DataNode
+17252 ResourceManager
+17309 NodeManager
+17626 JobHistoryServer
+                    </pre>                    
+                </div>
+                <p><strong>Verify Hadoop installation</strong></p>
+                <p>With Web Interfaces.</p>
+                <p>Open the browser with the following URL’s</p>
+                <div class="codebox">
+                    <pre>
+HDFS-UI: http://localhost:50070
+Resource Mnager UI: http://localhost:8088
+Job History UI: http://localhost:19888
+                    </pre>                    
+                </div>
+
+                <p>Run the WordCount example</p>
+                <p>Verify the installation by running the Wordcount Example. This is an example to count the number of times, each word appears in the given input data set.</p>
+                <p>Create input dir and create a sample file ‘animals.txt’ with the following content. Use your favoirite editor vi or emacs or gedit.</p>
+
+                <div class="codebox">
+                    <pre>
+cat dog elephant zebra wolf
+cat dog elephant zebra wolf
+cat dog elephant zebra wolf
+cat dog elephant zebra wolf
+                    </pre>                    
+                </div>
+
+                <p>Copy the animals.txt file from local filesystem to a ‘/input’ file in hadoop filesystem using</p>
+
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ bin/hadoop dfs -copyFromLocal \
+      input/animals.txt /input
+                    </pre>                    
+                </div>
+
+                <p>Run the wordcount MapReduce program</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ bin/hadoop jar \
+        share/hadoop/mapreduce/hadoop-mapreduce-examples-2.*-alpha.jar
+        wordcount /input /output
+ 
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ bin/hadoop dfs -ls /
+DEPRECATED: Use of this script to execute hdfs command is deprecated.
+Instead use the hdfs command for it.
+ 
+Found 3 items
+drwxr-xr-x   - gpuser supergroup          0 2013-04-04 02:44 /output
+-rw-r--r--   1 gpuser supergroup        129 2013-04-04 02:43 /input
+drwxrwx---   - gpuser supergroup          0 2013-04-04 02:42 /tmp
+                    </pre>                    
+                </div>
+
+                <p>Use dfs cat command to see the output</p>
+                <div class="codebox">
+                    <pre>
+gpuser@ubuntu:~/hadoop-2.0.3-alpha$ bin/hadoop dfs -cat /output/*
+cat 4
+dog 4
+elephant 4
+zebra 4
+wolf 4
+                    </pre>                    
+                </div>
+            </div><!--/single node-->
+                <hr />
+
+            <div id="multi-nodeInstallation" style="display:block;margin-top:-40px;"><br><br>
+                <h1>Multi-node installation</h1>
+                <hr />
+                <p>Running Hadoop 2.0.3-alpha On Ubuntu Linux – Multi Node Cluster</p>
+                <p>The goal of this tutorial is to run Hadoop 2.x on a multi-node cluster. For this exercise, we would be using two Ubuntu Linux boxes.</p>
+                <p><strong>Prerequisities</strong></p>
+                <p>Two Linux boxes with Ubuntu 12.* or One Linux box and one VM on the same box</p>
+                <p>Running Hadoop Version 2 – Single Node cluster. Complete<a href=""> Singlenode Hadoop installation </a>tutorial before proceeding further.</p>
+                <p>This tutorial has been tested with the following software versions:</p>
+                <p><strong>Ubuntu Linux 12.04 LTS</strong></p><br />
+                <p><strong>JDK 1.7</strong></p>
+                <p>Through out the tutorial,commands to be executed on the master and slave node are mentioned as follows:</p>
+                <p><strong>master</strong> – execute commands on the master node</p>
+                <p><strong>slave</strong> – execute commands on the slave node</p>
+                <h3>Overview</h3>
+                <p>The following picture gives a brief overview of the cluster. Two Node Cluster</p>
+                <img src="ddf/sds.png">
+                <p>FIgure shows a two node cluster. Since, we have only two nodes, we will use the master node as both master and slave. For clarity, master and slave1 are shown as separate nodes. However, in this tutorial,master will also act as one of the slave.</p><br />
+                <p>Master node runs both the Namenode and ResourceManager.Since Master is also a slave, NodeManger and DataNode also runs on the master node.</p>
+                <p><strong>Master</strong></p>
+                <ul>
+                    <li>NameNode</li>
+                    <li>Resource Manager</li>
+                    <li>NodeManager</li>
+                    <li>HstoryServer</li>
+                    <li>DataNode</li>
+                    <li>slave1</li>
+                </ul>
+                <p><strong>Data Node</strong></p>
+                <ul>
+                    <li>Node Manager</li>
+                    <li>Steps for Installation</li>
+                </ul>
+
+                <p><strong>Step 1:</strong>Preparing the machines for the Cluster</p>
+                <p>Install the operating system on both the machines. The machines should be able to ping each other. Check the IP addresses of the machines. If dhcp is used, make sure the ip-address does not change for the rest of the tutorial.</p>
+                <p>Note the IP addresses. The IP address can be obtained by using the command</p>
+
+                <div class="codebox">
+                    <pre>
+$ sudo ifconfig eth0
+                    </pre>
+                </div>
+                <p>master – 172.16.109.1</p>
+                <p>slave – 172.16.109.128</p>
+                <p><strong>*Note: IP addresses in your system may be different</strong></p>
+                <p>Edit /etc/hosts on the both master and slave. Add the following lines in /etc/hosts file</p>
+
+
+                <div class="codebox">
+                    <pre>
+localhost 127.0.0.1
+172.16.109.1 master
+172.16.109.128 slave
+                    </pre>
+                </div>
+                <p>Make sure other entries are removed or commented in the/etc/hosts file. Verify that both machines ping each other “`</p>
+                <p><strong>master</strong> – Ping slave from master</p>
+                <p>From the master machine issue the following command</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master$ping slave
+                    </pre>
+                </div>
+
+                <p><strong>slave </strong>– Ping master from slave</p>
+                <p>From the slave machine issue the following command</p>
+                <div class="codebox">
+                    <pre>
+gpuser@slave$ping master
+                    </pre>
+                </div>
+
+                <p>The ping should be successful, if not contact your IT support to fix any networking issues.</p>
+                <p><strong>Step 2:</strong> Creating dedicated user and storage directories</p>
+                <p>Create user gpuser(home dir /home/gpuser) and group gp on both master and slave</p>
+                <p>Create the following directories on namenode and masternode under home directory /home/gpuser</p>
+                <p><strong>master</strong></p>
+
+                <div class="codebox">
+                    <pre>
+$mkdir -p data/namenode
+$mkdir -p data/datanode
+                    </pre>
+                </div>
+                <p><strong>slave</strong></p>
+                <div class="codebox">
+                    <pre>
+mkdir -p data/datanode
+                    </pre>
+                </div>
+
+                <p><strong>Step 3: </strong>Install ssh and set up password less ssh between master and slave</p>
+                <p><strong>master</strong></p>
+                <p><strong>Install SSH</strong></p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~$sudo apt-get install ssh
+gpuser@master:~$sudo apt-get install rsync
+                    </pre>
+                </div>
+
+                <p>Generate public/private RSA key pairs using the following command.</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~$ ssh-keygen -t rsa -P ""
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/gpuser/.ssh/id_rsa):
+Created directory '/home/gpuser/.ssh'.
+Your identification has been saved in /home/gpuser/.ssh/id_rsa.
+Your public key has been saved in /home/gpuser/.ssh/id_rsa.pub.
+The key fingerprint is:
+3c:f7:ca:f2:49:a7:05:ee:90:66:05:0f:7b:a9:63:fc gpuser@master
+The key's randomart image is:
++--[ RSA 2048]----+
+| |
+| |
+| o |
+| . = . |
+| S B |
+| . O o |
+| X o + |
+| +.B * |
+| oE |
++-----------------+
+                    </pre>
+                </div>
+                <p>Press Enter to save the key in the default location.</p>
+                <p>Enable ssh to the local machine using the following command.</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~$ cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+                    </pre>
+                </div>
+
+                <p>Test the ssh setup by connecting to the local machine with the gpuser user.</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~$ ssh localhost
+ 
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is ca:96:1c:5a:38:f8:9f:99:45:d4:57:82:3c:1b:64:b7.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
+ 
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+                    </pre>
+                </div>
+
+                <p><strong>slave</strong></p>
+                <p>repeat the above steps on slave</p>
+                <p>Authorize master to allow ssh on slave node without the password</p>
+                <p><strong>master</strong></p>
+                <div class="codebox">
+                    <pre>
+gpuser@master~$ ssh-copy-id -i $HOME/.ssh/id_rsa.pub gpuser@slave
+                    </pre>
+                </div>
+
+                <p>Execute the command ssh slave to verify ssh to slave works without the password</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~$ ssh slave
+Welcome to Ubuntu 12.10 (GNU/Linux 3.5.0-17-generic i686)
+ 
+* Documentation: https://help.ubuntu.com/
+ 
+329 packages can be updated.
+98 updates are security updates.
+ 
+Last login: Fri Apr 5 00:32:00 2013 from ip6-localhost
+gpuser@slave:~$
+#exit from the ssh
+gpuser@slave:~$ exit
+                    </pre>
+                </div>
+
+                <p><strong>Step 4:</strong> Install Hadoop on Master</p>
+                <p>Follow the steps as outlined in the tutorial ‘Running Hadoop Version 2 – Single Node cluster’ and complete the installation of Hadoop on master.</p>
+                <p><strong>Step 5: </strong>Master node configuration</p>
+                <p>Set the following environement variables in .bashrc</p>
+                <p>Open .bashrc file in the home folder and add the following lines at the end</p>
+                <div class="codebox">
+                    <pre>
+export HADOOP_HOME=$HOME/hadoop-2.0.3-alpha export HADOOP_MAPRED_HOME=$HOME/hadoop-2.0.3-alpha export HADOOP_COMMON_HOME=$HOME/hadoop-2.0.3-alpha export HADOOP_HDFS_HOME=$HOME/hadoop-2.0.3-alpha export YARN_HOME=$HOME/hadoop-2.0.3-alpha export HADOOP_CONF_DIR=$HOME/hadoop-2.0.3-alpha/etc/hadoop export JAVA_HOME=$HOME/java/jdk1.7.0_17 export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin
+                    </pre>
+                </div>
+
+                <p>Source the variables using the following command</p>
+                <div class="codebox">
+                    <pre>
+$ source ~/.bashrc
+                    </pre>
+                </div>
+
+                <p>Search for JAVA_HOME and set export JAVA_HOME variable in libexec/hadoop-config.sh</p>
+                <div class="codebox">
+                    <pre>
+export JAVA_HOME=$HOME/java/jdk1.7.0_17
+                    </pre>
+                </div>
+
+                <p>Add following lines at start of script in etc/hadoop/yarn-env.sh :</p>
+                <div class="codebox">
+                    <pre>
+export JAVA_HOME=$HOME/java/jdk1.7.0_17
+export HADOOP_HOME=/home/hadoop-2.0.3-alpha
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+                    </pre>
+                </div>
+
+                <p>Hadoop configration files at located at $HADOOP_HOME/etc/hadoop.</p>
+                <p>Update the configuration files with the following entries respectively.</p>
+                <div class="codebox">
+                    <pre>
+$HADOOP_HOME/etc/hadoop/master
+                    </pre>
+                </div>
+
+                <p>Open master file and add the following line</p>
+                <div class="codebox">
+                    <pre>
+master
+                    </pre>
+                </div>
+
+                <p>$HADOOP_HOME/etc/hadoop/slaves</p>
+                <p>Open slaves file and add the following lines</p>
+                <div class="codebox">
+                    <pre>
+master
+slave
+                    </pre>
+                </div>
+
+                <p>*Note that the master is also listed as one the slave.</p>
+                <p>Open the file and copy the following contents respectively.</p>
+                <p><strong>$HADOOP_HOME/etc/hadoop/core-site.xml</strong></p>
+                <div class="codebox">
+                    <pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;
+&lt;configuration&gt;
+     &lt;property&gt;
+         &lt;name&gt;fs.default.name&lt;/name&gt;
+         &lt;value&gt;hdfs://master:9000&lt;/value&gt;
+     &lt;/property&gt;
+&lt;/configuration&gt;
+                    </pre>
+                </div>
+
+                <p><strong>$HADOOP_HOME/etc/hadoop/hdfs-site.xml</strong></p>
+                <div class="codebox">
+                    <pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;
+ &lt;configuration&gt;
+     &lt;property&gt;
+         &lt;name&gt;dfs.replication&lt;/name&gt;
+         &lt;value&gt;2&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+         &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+         &lt;value&gt;file:/home/gpuser/data/namenode&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+         &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+         &lt;value&gt;file:/home/gpuser/data/datanode&lt;/value&gt;
+     &lt;/property&gt;
+ &lt;/configuration&gt;
+                    </pre>
+                </div>
+
+                <p><strong>$HADOOP_HOME/etc/hadoop/mapred-site.xml</strong></p>
+                <div class="codebox">
+                    <pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+     &lt;property&gt;
+         &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+         &lt;value&gt;yarn&lt;/value&gt;
+     &lt;/property&gt;
+&lt;/configuration&gt;
+                    </pre>
+                </div>
+
+                <p><strong>$HADOOP_HOME/yarn-site.xml :</strong></p>
+                <div class="codebox">
+                    <pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+ &lt;configuration&gt;
+     &lt;property&gt;
+         &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+         &lt;value&gt;mapreduce.shuffle&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+         &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;
+         &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+         &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;
+         &lt;value&gt;master:8030&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+         &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;
+         &lt;value&gt;master:8031&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+         &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;
+         &lt;value&gt;master:8032&lt;/value&gt;
+     &lt;/property&gt;
+ &lt;/configuration&gt;
+                    </pre>
+                </div>
+
+                <p><strong>Step 6: Install hadoop on Slave node</strong></p>
+                <p><strong>master</strong></p>
+                <p>Use the following command to copy hadoop installation from master to the slave</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~$ scp -r hadoop-2.0.3-alpha gpuser@slave:/home/gpuser
+                    </pre>
+                </div>
+
+                <p><strong>slave</strong></p>
+                <p>Verify that the following folder exists on slave.</p>
+                <div class="codebox">
+                    <pre>
+gpuser@slave:~$ ls -al hadoop-2.0.3-alpha
+                    </pre>
+                </div>
+
+                <p><strong>Step 7: Slave node configuration</strong></p>
+                <p>Open .bashrc file in the home folder and add the following lines at the end</p>
+                <div class="codebox">
+                    <pre>
+export HADOOP_HOME=$HOME/hadoop-2.0.3-alpha
+export HADOOP_MAPRED_HOME=$HOME/hadoop-2.0.3-alpha
+export HADOOP_COMMON_HOME=$HOME/hadoop-2.0.3-alpha
+export HADOOP_HDFS_HOME=$HOME/hadoop-2.0.3-alpha
+export YARN_HOME=$HOME/hadoop-2.0.3-alpha
+export HADOOP_CONF_DIR=$HOME/hadoop-2.0.3-alpha/etc/hadoop
+export JAVA_HOME=$HOME/java/jdk1.7.0_17
+export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin
+                    </pre>
+                </div>
+
+                <p>Source the variables using the following command</p>
+                <div class="codebox">
+                    <pre>
+$ source ~/.bashrc
+                    </pre>
+                </div>
+
+                <p>Search for JAVA_HOME and set export JAVA_HOME variable in libexec/hadoop-config.sh</p>
+                <div class="codebox">
+                    <pre>
+export JAVA_HOME=$HOME/java/jdk1.7.0_17
+                    </pre>
+                </div>
+
+                <p>Search for JAVA_HOME and set export JAVA_HOME variable in etc/hadoop/yarn-env.sh</p>
+                <div class="codebox">
+                    <pre>
+export JAVA_HOME=$HOME/java/jdk1.7.0_17
+                    </pre>
+                </div>
+
+                <p>Remove the file $HADOOP_HOME/etc/hadoop/slaves</p>
+                <p><strong>slave</strong></p>
+                <div class="codebox">
+                    <pre>
+rm $HADOOP_HOME/etc/hadoop/slaves
+                    </pre>
+                </div>
+
+                <p>open the file and copy the following contents respectively</p>
+                <p><strong>yarn-site.xml</strong></p>
+                <div class="codebox">
+                    <pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+     &lt;property&gt;
+         &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+         &lt;value&gt;mapreduce.shuffle&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+          &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;
+          &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+          &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;
+          &lt;value&gt;master:8030&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+          &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;
+          &lt;value&gt;master:8031&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+          &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;
+          &lt;value&gt;master:8032&lt;/value&gt;
+     &lt;/property&gt;
+&lt;/configuration&gt;
+
+                    </pre>
+                </div>
+
+                <p><strong>core-site.xml</strong></p>
+                <div class="codebox">
+                    <pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+     &lt;property&gt;
+         &lt;name&gt;fs.default.name&lt;/name&gt;
+         &lt;value&gt;hdfs://master:9000&lt;/value&gt;
+     &lt;/property&gt;
+&lt;/configuration&gt;
+                    </pre>
+                </div>
+
+                <p><strong>hdfs-site.xml</strong></p>
+                <div class="codebox">
+                    <pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+     &lt;property&gt;
+         &lt;name&gt;dfs.replication&lt;/name&gt;
+         &lt;value&gt;1&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+         &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+         &lt;value&gt;file:/home/gpuser/data/namenode&lt;/value&gt;
+     &lt;/property&gt;
+     &lt;property&gt;
+          &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+           &lt;value&gt;file:/home/gpuser/data/datanode&lt;/value&gt;
+     &lt;/property&gt;
+  &lt;/configuration&gt;
+                    </pre>
+                </div>
+
+                <p><strong>mapred-site.xml</strong></p>
+                <div class="codebox">
+                    <pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+        &lt;value&gt;yarn&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+
+                    </pre>
+                </div>
+
+                <p><strong>Step 8:</strong> Initialize Hadoop File System</p>
+                <p>Namenode needs to be initialized before starting with Hadoop File System. Namenode creates a unique namespace id for this instance of the Hadoop File System.</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~/hadoop-2.0.3-alpha$ bin/hadoop namenode -format
+
+Formatting using clusterid: CID-8b844021-d1ea-4b0a-a625-d17dcc133299
+13/04/04 02:07:39 INFO util.HostsFileReader: Refreshing hosts (include/exclude) list
+13/04/04 02:07:39 INFO blockmanagement.DatanodeManager: dfs.block.invalidate.limit=1000
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: dfs.block.access.token.enable=false
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: defaultReplication = 1
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: maxReplication = 512
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: minReplication = 1
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: maxReplicationStreams = 2
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: shouldCheckForEnoughRacks = false
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: replicationRecheckInterval = 3000
+13/04/04 02:07:39 INFO blockmanagement.BlockManager: encryptDataTransfer = false
+13/04/04 02:07:39 INFO namenode.FSNamesystem: fsOwner = gpuser (auth:SIMPLE)
+13/04/04 02:07:39 INFO namenode.FSNamesystem: supergroup = supergroup
+13/04/04 02:07:39 INFO namenode.FSNamesystem: isPermissionEnabled = true
+13/04/04 02:07:39 INFO namenode.FSNamesystem: HA Enabled: false
+13/04/04 02:07:39 INFO namenode.FSNamesystem: Append Enabled: true
+13/04/04 02:07:40 INFO namenode.NameNode: Caching file names occuring more than 10 times
+13/04/04 02:07:40 INFO namenode.FSNamesystem: dfs.namenode.safemode.threshold-pct = 0.9990000128746033
+13/04/04 02:07:40 INFO namenode.FSNamesystem: dfs.namenode.safemode.min.datanodes = 0
+13/04/04 02:07:40 INFO namenode.FSNamesystem: dfs.namenode.safemode.extension = 30000
+13/04/04 02:07:41 INFO common.Storage: Storage directory /home/gpuser/data/namenode has been successfully formatted.
+13/04/04 02:07:41 INFO namenode.FSImage: Saving image file /home/gpuser/data/namenode/current/fsimage.ckpt_0000000000000000000 using no compression
+13/04/04 02:07:41 INFO namenode.FSImage: Image file of size 121 saved in 0 seconds.
+13/04/04 02:07:41 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid &gt;= 0
+13/04/04 02:07:41 INFO util.ExitUtil: Exiting with status 0
+13/04/04 02:07:41 INFO namenode.NameNode: SHUTDOWN_MSG:
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at ubuntu/127.0.1.1
+************************************************************
+gpuser@master:~/hadoop-2.0.3-alpha$
+                    </pre>
+                </div>
+
+                <p><strong>Step 9:</strong> Start HDFS on Master Node</p>
+                <div class="codebox">
+                    <pre>
+$ sbin/hadoop-daemon.sh start namenode
+$ sbin/hadoop-daemons.sh start datanode
+                    </pre>
+                </div>
+
+                <p>Verify namenode and data node running on master and slave</p>
+                <p>Check namenode and datanode running using the following command</p>
+                <p><strong>master</strong></p>
+                <div class="codebox">
+                    <pre>
+$ jps
+19785 DataNode
+24567 Jps
+16407 NameNode
+
+                    </pre>
+                </div>
+
+                <p><strong>slave</strong></p>
+                <p>Check datanode running using the following command</p>
+                <div class="codebox">
+                    <pre>
+$ jps
+13589 DataNode
+15203 Jps
+                    </pre>
+                </div>
+
+                <p><strong>Step 10:</strong> Start Yarn Services</p>
+                <p>Run the following commands on the master node</p>
+                <div class="codebox">
+                    <pre>
+$ sbin/yarn-daemon.sh start resourcemanager
+$ sbin/yarn-daemons.sh start nodemanager
+$ sbin/mr-jobhistory-daemon.sh start historyserver
+                    </pre>
+                </div>
+
+                <p>Verify yarn services running in master node</p>
+                <p><strong>master</strong></p>
+                <div class="codebox">
+                    <pre>
+$ jps
+19785 DataNode
+24567 Jps
+16407 NameNode
+16409 ResourceManager
+16410 NodeManager
+16542 HistoryServer
+                    </pre>
+                </div>
+
+                <p>Verify yarn services running in slave node</p>
+                <p><strong>slave</strong></p>
+                <div class="codebox">
+                    <pre>
+$ jps
+13589 DataNode
+13520 NodeManager
+15203 Jps
+                    </pre>
+                </div>
+
+                <p>Verify Hadoop installation</p>
+                <p>With Web Interfaces.</p>
+                <p>Open the browser with the following URL’s</p>
+                <p>HDFS-UI: <a href="http://localhost:50070 HDFS-UI">http://localhost:50070 HDFS-UI</a>
+                Resource Mnager UI: <a href="http://localhost:8088 ResourceManager">http://localhost:8088 ResourceManager</a>
+                Job History UI: <a href="http://localhost:19888 NodeManager">http://localhost:19888 NodeManager</a>
+                Run the WordCount example</p>
+                <p>Verify the installation by running the Wordcount Example. This is an example to count the number of times, each word appears in the given input data set.
+                Create input dir and create a sample file ‘animals.txt’ with the following content. Use your favoirite editor vi or emacs or gedit.</p>
+                <div class="codebox">
+                    <pre>
+cat dog elephant zebra wolf
+cat dog elephant zebra wolf
+cat dog elephant zebra wolf
+cat dog elephant zebra wolf
+                    </pre>
+                </div>
+
+                <p>Copy the animals.txt file from local filesystem to a ‘/input’ file in hadoop filesystem using</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~/hadoop-2.0.3-alpha$ bin/hadoop dfs -copyFromLocal /home/animals.txt /input
+                    </pre>
+                </div>
+
+                <p>Run the wordcount MapReduce program</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~/hadoop-2.0.3-alpha$ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.*-alpha.jar wordcount /input /output
+
+gpuser@master:~/hadoop-2.0.3-alpha$ bin/hadoop dfs -ls /
+DEPRECATED: Use of this script to execute hdfs command is deprecated.
+Instead use the hdfs command for it.
+
+Found 3 items
+drwxr-xr-x - gpuser supergroup 0 2013-04-04 02:44 /output
+-rw-r--r-- 1 gpuser supergroup 129 2013-04-04 02:43 /input
+drwxrwx--- - gpuser supergroup 0 2013-04-04 02:42 /tmp
+                    </pre>
+                </div>
+
+                <p>Use dfs cat command to see the output</p>
+                <div class="codebox">
+                    <pre>
+gpuser@master:~/hadoop-2.0.3-alpha$ bin/hadoop dfs -cat /output/*
+cat 4
+dog 4
+elephant 4
+zebra 4
+wolf 4
+                    </pre>
+                </div>
+                <hr />
+            </div><!--/Multinode-->
+
+
+        <div id="hdfsIntro" style="display:block;margin-top:-40px;"><br><br>
+            <h2>HDFS</h2>
+            <hr />
+            <p>Agenda of the tutorial is to give the insights to Hadoop Distributed File System.</p>
+            <p><strong>Introduction to HDFS</strong></p>
+            <p>The foundation of efficient data processing in Hadoop is its data storage model.HDFS is Hadoop’s implementation of a distributed filesystem. It is designed to hold a large amount of data, and provide access to this data to many clients distributed across a network.To be able to successfully leverage HDFS, you first must understand how it is implemented and how it works.</p>
+            <p><strong>The Design of HDFS</strong></p>
+            <p>The HDFS design is based on the design of the Google File System (GFS).</p>
+            <p>HDFS is a filesystem designed for storing very large files with streaming data access
+            patterns, running on clusters of commodity hardware.</p>
+            <p><strong>Very large files</strong></p>
+            <p>“Very large” in this context means files that are hundreds of megabytes, gigabytes,
+            or terabytes in size.</p>
+            <p>Streaming data access</p>
+            <p>HDFS uses &#8220;write-once, read-many-times&#8221; pattern .Over the time we are performing several operation on data which is once copied to HDFS.In this case the total amout of time took to access whole data is more important than the latency in reading the first record.</p>
+            <p><strong>Commadity hardware</strong></p>
+            <p>Hadoop can run on commonly available hardware.</p>
+            <p><strong>Low-latency data access</strong></p>
+            <p>Applications that require low-latency access to data, in the tens of milliseconds
+            range, will not work well with HDFS.</p>
+            <p><strong>Lots of small files</strong></p>
+            <p>number of files in a filesystem is governed by the amount of memory on the namenode. As a rule of thumb, each file, directory, and block takes about 150 bytes. So, for example, if you had one million files, each taking one block, you would need at least 300 MB of memory. While storing millions of files is feasible, billions is beyond the capability of current hardware</p>
+            <p><strong>Multiple writers,arbitary file modifications</strong></p>
+            <p>Files in <strong>HDFS</strong> may be written to by a single writer. Writes are always made at the
+            end of the file.</p>
+            <p><strong>HDFS Concepts</strong></p>
+            <p><strong>Blocks</strong></p>
+
+            <p><a href="http://www.datascience-labs.com/wp-content/uploads/2013/11/hdfs-blocks.png"><img class="size-medium wp-image-220 alignleft" alt="hdfs-blocks" src="http://www.datascience-labs.com/wp-content/uploads/2013/11/hdfs-blocks-300x139.png" width="300" height="139" /></a>A block size is the minimum amout of data that can be read or write in to disk.</p>
+            <p>File system blocks are typically a few killo bytes in size.</p>
+            <p>HDFS, too, has the concept of a block, but it is a much larger unit—64 MB by default.</p>
+            <p>Files in HDFS are broken into block-sized chunks,which are stored as independent units.</p>
+            <p>HDFS block size is large to minimize the cost of seeks.</p>
+            <p>Advantages of block abstraction:</p>
+            <p>1)A file can be larger than any single disk in network.</p>
+            <p>2)Since unit of abstraction a block rather than a file  simplifies storage subsystem.</p>
+            <p>3)Blocks fit well with replication for providing fault tolerant</p>
+            <p><strong>Namenodes and Datanodes</strong></p>
+            <p><a href="http://www.datascience-labs.com/wp-content/uploads/2013/11/dfs-1-hdfs-chunks.png"><img class="size-medium wp-image-221 alignleft" alt="dfs-1-hdfs-chunks" src="http://www.datascience-labs.com/wp-content/uploads/2013/11/dfs-1-hdfs-chunks-300x199.png" width="300" height="199" /></a></p>
+            <p>Namenode manages the filesystem name space.</p>
+            <p>Namenode maintains filesystem tree and metadata of all the files in directories in the tree.This information is stored in <strong>namespace image</strong> and <strong>edit log.</strong></p>
+            <p><strong>Data nodes</strong> are work horses of file system.They store and retrieve blocks when they are told by client.Data nodes report back to name node periodically with list of blocks that they are storing.</p>
+            <p><strong>Secondary namenode</strong> periodically merge the name space image with edit log to prevent edit log from becoming too large.</p>
+            <p>The secondary namenode usually runs on a separate physical machine</p>
+            <p>It keeps a copy of the merged name space image, which can be used in the event of the namenode failing.</p>
+            <p>In case of total failure of the primary, data loss is almost certain.
+            we can only copy the namenode’s metadata files that are on NFS to the secondary and run it as the new primary.</p>
+            <p><strong>HDFS fedaration </strong></p>
+            <p>Namenode keeps log of every file and block in the  filesystem in memory.So the memory available on namenode is the limiting factor for scaling.</p>
+            <p>Scaling Namenode can be achieved by HDFS fedaration.</p>
+            <p><a href="http://www.datascience-labs.com/wp-content/uploads/2013/11/federation.gif"><img class="alignnone size-medium wp-image-232" alt="federation" src="http://www.datascience-labs.com/wp-content/uploads/2013/11/federation-300x180.gif" width="300" height="180" /></a></p>
+            <p>In federation, each namenode manages a <strong>namespace volume</strong>, which is made up of
+            the metadata for the namespace, and a <strong>block pool</strong> containing all the blocks for the files
+            in the namespace.</p>
+            <p>Namespace volumes are independent of each other,  furthermore the failure of one
+            namenode does not affect the availability of the namespaces managed by other namen-
+            odes.</p>
+            <p><strong>HDFS High Availability</strong></p>
+            <ul>
+            <li><a href="http://blog.cloudera.com/blog/2012/03/high-availability-for-the-hadoop-distributed-file-system-hdfs/">High availability for the HDFS NameNode</a>, which eliminates the previous SPOF in HDFS.</li>
+            <li>Support for filesystem snapshots in HDFS, which brings native backup and disaster recovery processes to Hadoop.</li>
+            <li>Support for federated NameNodes, which allows for horizontal scaling of the filesystem namespace.</li>
+            <li>Support for NFS access to HDFS, which allows HDFS to be mounted as a standard filesystem.</li>
+            </ul>
+            <hr />
+        </div>
+
+
+        <div id="hdfsCommands" style="display:block;margin-top:-40px;"><br><br>
+            <h2>Try HDFS Commands</h2>
+            <p>Hadoop provides several ways of accessing HDFS. The FileSystem (FS) shell
+            commands provide a wealth of operations supporting access and manipulation
+            of HDFS files. These operations include viewing HDFS directories,creating files,deleting iles,copying files, and so on.</p>
+            <p>In this document we will try various HDFS Commands. Practising these commands helps one to understand and use Hadoop better.</p>
+
+            <p><strong>hadoop fs help information</strong></p>
+                <div class="codebox">
+                    <pre>
+[esammer@hadoop01 ~]$ hadoop fs
+Usage: java FsShell
+[-ls &lt;path&gt;]
+[-lsr &lt;path&gt;]
+[-df [&lt;path&gt;]]
+[-du &lt;path&gt;]
+[-dus &lt;path&gt;]
+[-count[-q] &lt;path&gt;]
+[-mv &lt;src&gt; &lt;dst&gt;]
+[-cp &lt;src&gt; &lt;dst&gt;]
+[-rm [-skipTrash] &lt;path&gt;]
+[-rmr [-skipTrash] &lt;path&gt;]
+[-expunge]
+[-put &lt;localsrc&gt; &#8230; &lt;dst&gt;]
+[-copyFromLocal &lt;localsrc&gt; &#8230; &lt;dst&gt;]
+[-moveFromLocal &lt;localsrc&gt; &#8230; &lt;dst&gt;]
+[-get [-ignoreCrc] [-crc] &lt;src&gt; &lt;localdst&gt;]
+[-getmerge &lt;src&gt; &lt;localdst&gt; [addnl]]
+[-cat &lt;src&gt;]
+[-text &lt;src&gt;]
+[-copyToLocal [-ignoreCrc] [-crc] &lt;src&gt; &lt;localdst&gt;]
+[-moveToLocal [-crc] &lt;src&gt; &lt;localdst&gt;]
+[-mkdir &lt;path&gt;]
+[-setrep [-R] [-w] &lt;rep&gt; &lt;path/file&gt;]
+[-touchz &lt;path&gt;]
+[-test -[ezd] &lt;path&gt;]
+[-stat [format] &lt;path&gt;]
+[-tail [-f] &lt;file&gt;]
+[-chmod [-R] &lt;MODE[,MODE]&#8230; | OCTALMODE&gt; PATH&#8230;]
+[-chown [-R] [OWNER][:[GROUP]] PATH&#8230;]
+[-chgrp [-R] GR
+                    </pre>
+                </div>
+
+                <h2>Try the following commands</h2>
+                <h3>Running Hadoop in Local Mode</h3>
+                <p>If you already have configured hadoop to run in Psuedo mode or cluster mode, use the following file to point to the right
+                hadoop cluster configuration</p>
+                <p><configuration>
+                    <property>
+                    <name>fs.default.name</name><br />
+                        <value>file:///</value>
+                    </property>
+                    <property>
+                        <name>mapred.job.tracker</name><br />
+                        <value>local</value>
+                    </property>
+                    </configuration>
+                </p>
+                <p>#Lists all the files in the local file system</p>
+                <pre>
+hadoop fs -conf /tmp/hadoop-local.xml  -ls /
+                </pre>
+                <p>#Lists all the files in the HDFS  file system</p>
+                <pre>
+hadoop fs -conf /tmp/hadoop-cluster.xml  -ls /
+                </pre>
+
+                <p>#Lists all the files in the $HADOOP_HOME/conf/hdfs-site.xml<br />
+                #uses the configuration file found in the class path</p>
+                <h3>Running Hadoop in Pusedo distributed Mode</h3>
+                <ul>
+                    <li>
+                        <p>Hadoop must be running in Psuedo or cluster mode</p>
+                        <pre>
+hadoop fs  -ls /
+bin/hadoop fs  -mkdir stocks
+bin/hadoop fs -ls /user/hadoop/stocks
+                        </pre>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="websupport.html">Data Sets</a><ul>
-                    <li class="toctree-l2"><a class="reference internal" href="web/quickstart.html">Yelp Data Set</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="web/api.html">Employee Data Set</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="web/searchadapters.html">Weather Dataset</a></li>
-                    <li class="toctree-l2"><a class="reference internal" href="web/searchadapters.html">Stocks Dataset</a></li>
-                    </ul>
-                    </li>
-                    
-                   
-                    </ul>
-                    </div>
-                    </div>
-                    <div class="section" id="indices-and-tables">
-                    <h1>Data Sets<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
-                    <ul class="simple">
-                    <li><a class="reference internal" href="genindex.html"><span>Yelp Data Set</span></a></li>
-                    <li><a class="reference internal" href="py-modindex.html"><span>Employee Data Set</span></a></li>
-                    <li><a class="reference internal" href="search.html"><span>Weather Data Set</span></a></li>
-                    <li><a class="reference internal" href="glossary.html#glossary"><span>Stocks Data Set</span></a></li>
-                    </ul>
+                </ul>
+                <p>#copy file from local file system to hadoop file system</p>
+                <p>hadoop fs -copyFromLocal conf hdfs://localhost:9000/user/hadoop</p>
+                <p>hadoop fs -copyFromLocal conf/* hdfs://localhost:9000/user/hadoop</p>
+                <p>#copy the file to local diectory</p>
+                <p>bin/hadoop dfs -copyToLocal /usr/hadoop/conf /conf</p>
+                <p>#rm a directory</p>
+                <p>bin/hadoop fs -rmr stocks</p>
+                <p>#remove a filename</p>
+                <p>bin/hadoop fs -rm filename</p>
+                <p>#expunge empty the trash</p>
+                <p>hadoop dfs -expunge</p>
+                <p>#Get files to the local file system</p>
+                <p>hadoop dfs -get /hadooptmp/input /tmp</p>
+                <p>#cp from src to dest</p>
+                <p>hadoop dfs -cp src dest</p>
+                <p>#disk usage</p>
+                <p>hadoop dfs -dus filename</p>
+                <p>#Dir of files ; give the total size of the dir</p>
+                <p>hadoop dfs -du dir</p>
+                <p>#recirvsive version of ls</p>
+                <p>bin/hadoop dfs -lsr /</p>
+                <p>#disctp for copying files from one hdfs file system to the other</p>
+                <p>hadoop distcp hdfs://namenode1://foo hdfs://namenode2/foo</p>
+                <p>#skils if the file is already present use -overwrite if need to be overwirtten</p>
+                <p>#betweeb two versions hdfs:// will not work; use http:// or webhdfs</p>
+                <p>#move files from dir1 to dir2</p>
+                <p>bin/hadoop dfs -mv /dir1 /dir2</p>
+                <p>#copy from local to hdfs</p>
+                <p>bin/hadoop dfs -put /hadooptmp/programming_hive.pdf</p>
+                <p>#remove a file</p>
+                <p>hadoop dfs rm filename</p>
+                <p>#set replication factor to 3</p>
+                <p>bin/hadoop dfs -setrep -w 3 -R /dir2</p>
+                <p>#Returns the stat information on the path.</p>
+                <p>bin/hadoop dfs -stat /dir2</p>
+                <p>#test the existance of the file</p>
+                <p>bin/hadoop dfs -test -[ezd] URI</p>
+                <p>#create an emptyfile</p>
+                <p>bin/hadoop -touchz pathname</p>
+                <p>#output the fil in text format</p>
+                <p>bin/hadoop dfs -text /input/ncdc/sample.txt</p>
+                <p>#Displays last kilobyte of the file to stdout. -f option can be used as in Unix.</p>
+                <p>bin/hadoop dfs -tail pathname</p>
+                <p>#Adding new data nodes and tak tsacker nodes</p>
+                <p>#add hostname to dfs.hosts</p>
+                <p>#add hostname to mapred.hosts</p>
+                <p>#adding a new node</p>
+                <p>hadoop dfsadmin -refreshNodes</p>
+                <p>#Adding a new task tracker</p>
+                <p>hadoop mradmin -refreshNodes</p>
+                <p>#Run the Java programs illustrating the API</p>
+                <p>#Decommisioning a node</p>
+                <p>#add hosts dfs.hosts.exclude</p>
+                <p>#add hosts to mapred.hosts.exclude</p>
+                <p>#ado this to start decommisioning process</p>
+                <p>hadoop dfsadmin -refreshNodes</p>
+                <p>#setting log levels</p>
+                <p>hadoop daemonlog -setLevel jobtracker-host:port \org.apache.hadoop.mapred.JobTracker DEBUG</p>
+                <p>#to make persistent log file</p>
+                <p>#add the following line to log4j.properties</p>
+                <p>log4j.logger.org.apache.hadoop.mapred.JobTracker=DEBUG</p>
+                <p>#cluster balancing</p>
+                <p>hadoop balancer [-threshold ]</p>
+                <p>hadoop dfs -chown [-R] user:group filenames</p>
+                <p>#chmode</p>
+                <p>hadoop dfs -chmode [-R] user:group filenames</p>
+                <p>#hadoo archives</p>
+                <p>% hadoop fs -lsr /my/files</p>
+                <p>-rw-r--r-- drwxr-xr-x -rw-r--r--</p>
+                <p>1 tom supergroup - tom supergroup 1 tom supergroup</p>
+                <p>1 2009-04-09 19:13 /my/files/a</p>
+                <p>0 2009-04-09 19:13 /my/files/dir</p>
+                <p>1 2009-04-09 19:13 /my/files/dir/b</p>
+                <p>This job produces a very small amount of output, so it is convenient to copy it from HDFS to our development machine. The -getmerge option to the hadoop fs command is useful here, as it gets all the files in the directory specified in the source pattern and merges them into a single file on the local filesystem:</p>
+                <p>% hadoop fs -getmerge max-temp max-temp-local</p>
+                <p>% sort max-temp-local | tail</p>
+                <p>1991 607</p>
+                <p>1992 605</p>
+                <p>1993 567 1994 568 1995 567 1996 561 1997 565 1998 568 1999 568 2000 558</p>
+                <hr />
+
+
+        </div><!--/hdfs commands-->
+
+        <div id="javaApi" style="display:block;margin-top:-40px;"><br><br>
+            <h2>Java-API</h2>
+            <p>Access to HDFS is through an instance of the <strong>FileSystem</strong> object. A <strong>FileSystem</strong> class is an abstract base class for a generic filesystem.</p>
+            <p>We can perform the following operatins using Java -Api</p>
+            <p><strong>The goals of this tutorial</strong></p>
+            <p>1.HDFS Java API Introduction</p>
+            <p>2.HDFS configuration</p>
+            <p>3.Reading Data from HDFS</p>
+            <p>4.Writing Data to HDFS</p>
+            <p>5.Browsing file system</p>
+            <p>HDFS Java API Introduction</p>
+            <p><strong>org.apache.hadoop.fs.FileSystem</strong> is an abstract class that serves as a generic file system representation.<strong>org.apache.hadoop.fs.FileSystem</strong> is a class and not an Interface.</p>
+            <p>Different types of File system Implementations</p>
+
+
+            <p><strong> org.apache.hadoop.fs.LocalFileSystem</strong></p>
+            <ul>
+                <li>Good old native file system using local disk(s)</li>
+            </ul>
+            <p><strong>org.apache.hadoop.hdfs.DistributedFileSystem</strong></p>
+            <ul>
+                <li> Hadoop Distributed File System (HDFS)</li>
+            </ul>
+            <p><strong>org.apache.hadoop.hdfs.HftpFileSystem</strong></p>
+            <ul>
+                <li>Access HDFS in read-only mode over HTTP</li>
+            </ul>
+            <p><strong>org.apache.hadoop.fs.ftp.FTPFileSystem</strong></p>
+            <ul>
+                <li>File system on FTP server</li>
+            </ul>
+            <hr />
+        </div>
 
             </div>
         </div>
-        <!-- /.row -->
 
-        <hr>
+
+<div class="col-md-3" id="rightbar">
+    <div class="panel panel-default" style="height:1000px;">
+
+                <div class="panel">
+                    Ads 
+                </div>
+
 
     </div>
-    <!-- /.container -->
+
+</div>
+
+</div><!--row-->
+
+  </div><!--container-->
+
+  <script type="text/javascript">
+    $('a[href^="#"]').on('click', function(event) {
+
+    var target = $( $(this).attr('href') );
+
+    if( target.length ) {
+        event.preventDefault();
+        $('html, body').animate({
+            scrollTop: target.offset().top
+        }, 1000);
+    }
+
+});
+</script>
+
+
