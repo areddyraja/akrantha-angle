@@ -8,20 +8,23 @@
                 <ul class="nav">
                     <li class="heading">Apache Spark</li>
                     <li><a is-active-nav href="#introSpark">Introduction</a></li>
+                    <li><a is-active-nav href="#getstarted">Getting Started</a></li>
+                    <li><a is-active-nav href="#eco-system">Spark Eco System</a></li>
+
                 </ul>
 
                 <ul class="nav">
-                    <li class="heading">Apache...</li>
-                    <li><a is-active-nav href="#apache2">apache2................... ssss</a></li>
-                    <li><a is-active-nav href="#apache3">apache3</a></li>
+                    <li class="heading">Getting Started</li>
+                    <li><a is-active-nav href="#sparkinstall">Installation</a></li>
+                    <li><a is-active-nav href="#sparkexample">Eclipse Setup</a></li>
                 </ul>
 
 
                 <ul class="nav">
-                    <li class="heading">Apache ...</li>
-                    <li><a href="#apache4">apache4</a></li>
-                    <li><a href="#apache5">apache5</a></li>
-                    <li><a href="#apache6">apache6</a></li>
+                    <li class="heading">Spark Examples</li>
+                    <li><a href="#collections-examples">Collections</a></li>
+                    <li><a href="#reduce-examples">Reduce</a></li>
+                    <li><a href="#aggregare-example">apache6</a></li>
                 </ul>
 
             </aside>
@@ -32,35 +35,262 @@
             <div class="col-md-7" style="margin-top:-18px;">
 
             <div id="introSpark" style="display:block;margin-top:-50px;"><br><br>
-                <h2>Apache Spark</h2>
-                <hr />
-                <!--content goes here-->
+                <h2>Introduction</h2>
+                <p>
+                Apache Spark is the opensource distributed computing framework, more focussed on iterative computing. It relies on the computation graph for reliability and uses in-memory computing. It is a general purpose cluster computing Platform. Spark is built and developed at Berkeley labs. It is moved to Apache and is written in scala and has the APIs in scala, python and Java. Python spark is getting more popular than Spark Scala.
+
+                </p>
+
+<p>
+                Apache Spark is multiple times faster than its predecessor Hadoop due to its design to use memory.
+                Hadoop primarily provides MapReduce paradigm, where Apache Spark offers MapReduce and a rich set of API for computing.
+</p>
+<p>
+                Apache Spark can be deployed on a Stand alone or on Hadoop or on Mesos.
+                Apache spark by default uses File System store. It works HDFS, Apache Cassandra, S3 and may be other storage systems.
+                </p>
+
+                <p>
+                Apache Spark relies heavily on the concept of RDD. RDD stands for Resilient Distributed Dataset. It provides a handle to individual data partitions which are the result of some computation.
+                It provides the basic abstraction for Data representation for Data processing
+
+
+                RDD provides a collection interface, which gives power to manipulate data, like counts, max, min, group by etc.
+                RDD can be cached to provide boost to performance.
+
+
+                RDD does not restrict to MapReduce paradigm. A simple word count example is shown below:
+
+
+                </p>
+                  <div class="codebox">
+                    <pre>
+val input = sparkContext.textFile("path/to/input/file")
+val words = input.flatMap(line => line.split(" "))
+val wordsMappedToOne = words.map(word => (word, 1))
+val wordOccrCount = wordsMappedToOne.reduceByKey((a, b) => a + b)
+wordOccrCount.saveAsTextFile("path/to/output/file")
+                    </pre>
+                </div>
+                RDD is lazily evaluated and immutable.
+                <p>
+                RDD provides transformations and operations. Transformantions gives a new RDD and operations triggers the actual calculations.
+            </p>
+
             </div>
 
 
-            <div id="apache2" style="display:block;margin-top: -50px;"><br><br>
-                <h2>apache2</h2>
-                <hr />
-                <!--content goes here-->
+            <div id="getstarted" style="display:block;margin-top: -50px;"><br><br>
+                <h2>Getting Started</h2>
+                The tutorial uses  Apache Spark 1.4.1
+                The following are the requisites.
+                <li>
+                    Ubuntu 12 or 14
+                </li>
+                <li>
+                    Apache Spark Installation
+                </li>
+                <li>
+                   Open JDK 1.7
+                </li>
+                <li>
+                    Scala 2.11.7
+                </li>
+                 <li>
+                    Python 2.7.3 for PySpark
+                </li>
+
+                A quick example
+
+                <div class="codebox">
+                    <pre>
+scala> val data = Array(1, 2, 3, 4, 5)
+data: Array[Int] = Array(1, 2, 3, 4, 5)
+scala> val rddData = sc.parallelize(data)
+rddData: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[1] at parallelize at <console>:23
+                    </pre>
+                </div>
+            </div>
+
+
+            <div id="eco-system" style="display:block;margin-top:-40px;"><br><br>
+                <h2>Spark Eco System</h2>
+                Spark Eco System has several libraries that provides additional capabilities. Some of the libraries are
+                <li>
+                    Spark Streaming: used for near real time processing of data. It uses stream of RDD's for processing the data
+                </li>
+                  <li>
+                    Spark SQL: Provides capability to expose datasets over SQL queries
+                </li>
+                  <li>
+                    Spark ML Lib: a scalable Machine Learning Library with commpin machine learning alogorithms such as regression, classification, clustering, collaborative filtering etc.
+                </li>
+                   <li>
+                    Spark GraphX: API for grpahs and parallel computation. 
+                </li>
+            </div>
+
+
+
+            <div id="sparkinstall" style="display:block;margin-top:-40px;"><br><br>
+                <h2>Spark Installation</h2>
+                Download Spark from the following URL <a href="http://spark.apache.org/downloads.html">Spark Downloads</a>
+                <p>
+                Choose Package Type as "Pre-built for Hadoop 2.6 and later"
+            </p>
+
+
+            </div>
+
+            <div id="sparkexample" style="display:block;margin-top:-40px;"><br><br>
+                <h2>Development Environment with Eclipse</h2>
+                <div class="codebox">
+                    <pre>
+sbt eclipse
+                    </pre>
+                </div>
 
             </div>
 
 
-            <div id="apache3" style="display:block;margin-top:-40px;"><br><br>
-                <h2>apche3</h2>
-                <hr />
-                <!--content goes here-->
+  <div id="collections-examples" style="display:block;margin-top:-40px;"><br><br>
+                <h3>Collections</h3>
+                <p>
+                RDD(Resilient Distributed Dataset) is the key Class in the Apache Spark framework.
+                RDD when partitioned will be a collections of individual partitions, and can be on separate nodes on a cluster.
+               </p>
+                <p>
+                With RDD handle, one can perform computations and transformations on all partitions within the data
+                Whenever a part of the RDD is lost, Spark can recover these RDD's using lineage information. The lineage inforamtion is stored in DAG(Directed acyclic graph) and referes to sequence of transformations resulting in the current/lost RDD. RDD does not impose restirctions on kind of data that can be stored and the API's can handle arbitary data types. 
+            </p>
+            <p>Most often Spark worked with key value pairs and hence Spark RDD is extended to supported additional functions using PairRDDFunctions, which expllicitly work on paired RDD functions.
+            </p>
 
-            </div><
-
-
-            <div id="apache4" style="display:block;margin-top:-40px;"><br><br>
-                <h2>apache4</h2>
-                <hr />
-                <!--content goes here-->
-
+                <div class="codebox">
+                     <p>Invoked Spark Shell
+            </p>
+                    <pre>
+cd SPARK_HOME (go to the installation directory of spark)
+bin/spark-shell
+                    </pre>
+                </div>
             </div>
 
+              <h4>Map</h4>
+              <div>
+             <p>Map applies transformation function on each of the items in the RDD. The return value is also an RDD
+            </p>
+              </div>
+               <div class="codebox">
+        
+                    <pre>
+#example 1
+val fruits = sc.parallelize(List("orange", "apple", "kiwi", "kiwi", "rabbit", "avakado","mango", "grapes", "banana"), 3)
+val lengths = fruits.map(_.length)
+val fruit_lengths = fruits.zip(lengths)
+fruit_lengths.collect
+                    </pre>
+                </div>
+
+                 <div class="codebox">
+        
+                    <pre>
+#example 2
+val names = sc.parallelize(List("Peter","Paul","Mary","John","Harry", 2)
+names.map(_.toUppercase)
+val fruit_lengths = fruits.zip(lengths)
+fruit_lengths.collect
+                    </pre>
+                </div>
+
+
+
+<h4>Folds</h4>
+              
+              <h4 id="reduce-examples">Reduce</h4>
+
+                <p>Reduces the given input. 
+                </p>
+                <div class="codebox">
+                    <pre>
+def reduce(f: (T, T) => T): T
+                    </pre>
+                </div>
+                 <div class="codebox">
+                    <pre>
+#example 2
+val numbers = sc.parallelize(1 to 100, 3)
+numbers.reduce( _ + _ )
+res0: Int = 5050
+                    </pre>
+                </div>
+
+                <div class="codebox">
+        
+                    <pre>
+#example 2
+val numbers = sc.parallelize(1 to 100, 3)
+numbers.reduce( (x,y)=> x + y )
+res1: Int = 5050
+                    </pre>
+                    <p>
+                        x is the previous value, and y is the current value. x+y is the cumulative sum of the numbers. The reduce takes a function, which shoud be commutative, other wise, reduce will give different results every time reduce is run on the same data
+                    </p>
+                </div>
+
+                <h4>Reducing the Tuples using reduceByKey</h4>
+                <p>Reduces the given input. 
+                </p>
+                <div class="codebox">
+                    <pre>
+val views=sc.parallelize(List(
+   ("US",  "Nov", "News",  100, 300),
+   ("US",  "Dec", "BreakingBad",  200, 2000),
+   ("US",  "Jan", "BreakingBad", 300, 3002),
+   ("US",  "Mar", "Friends", 122, 1230),
+   ("US",  "Apr", "Friends", 10,100),
+   ("US",  "May", "Friends", 20, 200),
+   ("US",  "Jun", "The Robot", 122,150),
+   ("US",  "Jul", "The Robot", 12, 1043),
+   ("India",  "Dec", "The Robot",  200, 2048),
+   ("India",  "Jan", "BreakingBad", 300, 900),
+   ("India",  "Mar", "BreakingBad", 122, 366),
+   ("India",  "Apr", "Friends", 10, 30),
+   ("India",  "May", "The Robot", 20, 80),
+   ("India",  "Jun", "Friends", 122, 488),
+   ("India",  "Jul", "BruceLee", 122, 488)))
+                    </pre>
+                </div>
+                 <div class="codebox">
+                    <pre>
+val views_counts = views.map{case (country, month, program, likes, mins) => ((country,program),(likes, mins) )}.reduceByKey((x,y)=>((x._1+y._1),(x._2+y._2))).collect
+
+views_counts: Array[((String, String), (Int, Int))] = Array(((India,The Robot),(220,2128)), ((US,BreakingBad),(500,5002)), ((US,News),(100,300)), ((India,Friends),(132,518)), ((India,BruceLee),(122,488)), ((US,Friends),(152,1530)), ((India,BreakingBad),(422,1266)), ((US,The Robot),(134,1193))
+                    </pre>
+                </div>
+                    <h5>How it works</h5>
+                    <p>The first step is to defnine a map that returns tuples.</p>
+                    <p>
+                    A key-value tuple is defined where key is also a tuple containing country and program. The value is also a tuple with likes and views.
+                    </p>
+                <div class="codebox">
+                    <pre>
+views.map{case (country, month, program, likes, mins) => ((country,program),(likes, mins) )}
+                    </pre>
+                </div>
+                <p>The next step is to reduce values by key. </p>
+                <p>The reduce function reduces the two values. x being the previus values and y being the current values. x and y are tuples, each containing (country,program),(likes, mins).
+                    Reduce is an associative operation and it works by adding two values first, and then take next set of values and keep adding till all the records are finished.
+                    </p>
+                <div class="codebox">
+                    <pre>
+reduceByKey((x,y)=>((x._1+y._1),(x._2+y._2))
+                    </pre>
+                </div>
+
+              <h4>Aggregate</h4>
+              <h4>Partitions</h4>
+              
 
             <div id="apache5" style="display:block;margin-top:-40px;"><br><br>
                 <h2>apache5</h2>
