@@ -24,9 +24,18 @@
                     <li class="heading">Spark Examples</li>
                     <li><a href="#collections-examples">Collections</a></li>
                     <li><a href="#reduce-examples">Reduce</a></li>
-                    <li><a href="#group-examples">Reduce</a></li>
-                    <li><a href="#aggregare-example">apache6</a></li>
+                    <li><a href="#group-examples">groupBy</a></li>
+                    <li><a href="#writing_to_file">Writing to a File</a></li>
                 </ul>
+
+                <ul class="nav">
+                    <li class="heading">Spark With Cassandra Examples</li>
+                    <li><a href="#gettting_started-cassandra">Start with Cassandra</a></li>
+                    <li><a href="#reduce-examples">Reduce</a></li>
+                    <li><a href="#group-examples">groupBy</a></li>
+                    <li><a href="#writing_to_file">Writing to a File</a></li>
+                </ul>
+
 
             </aside>
         </div>
@@ -62,6 +71,12 @@
 
                 RDD does not restrict to MapReduce paradigm. A simple word count example is shown below:
 
+                <p>
+                    SparkContext is available as part of the shell.
+                    SparkContext can create a RDD from local files, external data sources like HDFS, database table like JDBC etc.
+                    SparkConntext has lot of methods and most used one is the one to create an RDD. RDD is sparks abstraction for collection data distributed over the cluser.
+                    RDD is lazily evaluated and immutable.
+                </p>
 
                 </p>
                   <div class="codebox">
@@ -73,7 +88,7 @@ val wordOccrCount = wordsMappedToOne.reduceByKey((a, b) => a + b)
 wordOccrCount.saveAsTextFile("path/to/output/file")
                     </pre>
                 </div>
-                RDD is lazily evaluated and immutable.
+
                 <p>
                 RDD provides transformations and operations. Transformantions gives a new RDD and operations triggers the actual calculations.
             </p>
@@ -501,12 +516,69 @@ res2: Long = 20
                 </div>
 
 
-            <div id="apache5" style="display:block;margin-top:-40px;"><br><br>
-                <h2>apache5</h2>
-                <hr />
-                <!--content goes here-->
+            <div id="writing_to_file" style="display:block;margin-top:-40px;"><br><br>
+                <h4>Writing into a File</h2>
+             
+            <div class="codebox">
+                    <pre>
+import java.io.File
+import java.io.PrintWriter
+ 
+import scala.io.Source
+ 
+object Write {
+  def main(args: Array[String]) {
+    val writer = new PrintWriter(new File("Write.txt"))
+ 
+    writer.write("Hello Developer, Welcome to Scala Programming.")
+    writer.close()
+ 
+    Source.fromFile("Write.txt").foreach { x => print(x) }
+  }
+ 
+}
+                  </pre>
+            </div>          
 
             </div>
+
+
+
+             <div id="gettting_started-cassandra" >
+                <h2>Getting started with Cassandra</h2>
+<p>             
+Preparing example Cassandra schema
+Create a simple keyspace and table in Cassandra. Run the following statements in cqlsh:
+</p>
+
+<div class="codebox">
+                    <pre>
+CREATE KEYSPACE test WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };
+CREATE TABLE test.kv(key text PRIMARY KEY, value int);
+Then insert some example data:
+
+INSERT INTO test.kv(key, value) VALUES ('key1', 1);
+INSERT INTO test.kv(key, value) VALUES ('key2', 2);
+    </pre>
+            </div>   
+
+<p>
+Now you're ready to write your first Spark program using Cassandra.
+Setting up SparkContext
+
+Before creating the SparkContext, set the spark.cassandra.connection.host property to the address of one of the Cassandra nodes:
+</p>
+
+            <div class="codebox">
+                    <pre>
+val conf = new SparkConf(true)
+   .set("spark.cassandra.connection.host", "127.0.0.1")
+                  </pre>
+            </div>   
+
+
+            </div>       
+
 
             <div id="apache6" style="display:block;margin-top:-40px;"><br><br>
                 <h2>apache6</h2>
