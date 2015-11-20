@@ -9,19 +9,30 @@
                     <li class="heading">Hadoop</li>
                     <li><a is-active-nav href="#introHadoop">Introduction</a></li>
                 </ul>
+
                 <ul class="nav">
                     <li class="heading">Installation</li>
                     <li><a is-active-nav href="#single-nodeInstallation">Single-node Installation</a></li>
                     <li><a is-active-nav href="#multi-nodeInstallation">Multi-node Installation</a></li>
                 </ul>
 
-
-                <ul class="nav nav-list primary push-bottom left-menu special">
+                <ul class="nav">
                     <li class="heading">HDFS</li>
                     <li><a href="#hdfsIntro">Introduction</a></li>
                     <li><a href="#hdfsCommands">Try HDFS Commands</a></li>
                     <li><a href="#javaApi">Java-API</a></li>
                 </ul>
+
+                <ul class="nav">
+                    <li class="heading">Hive</li>
+                    <li><a href="#hiveIntro">Hive – Introduction</a></li>
+                    <li><a href="#hiveRunMode">Hive – Run Modes</a></li>
+                    <li><a href="#hiveBasic">Hive Basics</a></li>
+                    <li><a href="#hiveDataDefination">HiveQL-Data Definition</a></li>
+                    <li><a href="#hiveQueriesPart1">Hive Queries – Part 1</a></li>
+                    <li><a href="#hiveQueriesPart2">Hive Queries – Part 2</a></li>
+                </ul>
+
 
             </aside>
         </div>
@@ -284,7 +295,7 @@ gpuser@ubuntu$source ~/.bashrc
                 <div class="codebox">
                
  <pre>
-<code>&lt;configuration&gt;</code>
+&lt;configuration&gt;
     &lt;property&gt;
         &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
         &lt;value&gt;mapreduce.shuffle&lt;/value&gt;
@@ -1424,6 +1435,1261 @@ bin/hadoop fs -ls /user/hadoop/stocks
             </ul>
             <hr />
         </div>
+
+        <div id="hiveIntro" style="display:block;margin-top:-40px;"><br><br>
+            <h2>Hive - Introduction</h2>
+                <p>Hadoop got a challenge in terms of moving existing data infrastructures to Hadoop ecosystem.</p>
+                <p>Mapping SQL data operations to the low-level MapReduce Java API is a tedious task. Hive does this dirty work for you, so you can focus on the query itself. Hive translates most queries to MapReduce jobs, thereby exploiting the scalability of Hadoop, while presenting a familiar SQL abstraction.</p>
+                <p>Hive is best suited for data warehouse applications, where a large data set is main-<br />
+                tained and mined for insights, reports.</p>
+                <p><strong>Hive Arichtecture</strong></p>
+                <p style="text-align: left;"><a href="http://www.datascience-labs.com/wp-content/uploads/2013/11/hive_architecture.png"><img class="size-medium wp-image-281 aligncenter" style="border: 1px solid black;" alt="hive_architecture" src="http://www.datascience-labs.com/wp-content/uploads/2013/11/hive_architecture-275x300.png" width="275" height="300" /></a><strong>Metastore:</strong> stores system catalog</p>
+                <p style="text-align: left;">To support features like schema(s) and data partitioning Hive keeps its metadata in a
+                Relational Database.</p>
+                <p style="text-align: left;">Meta store is packaged with Derby, a lightweight embedded SQL DB.</p>
+                <p style="text-align: left;"><span style="line-height: 1.5;">Schema is not shared between users as each user has </span>their own instance of embedded Derby.</p>
+                <p style="text-align: left;">Stored in <strong>metastore_db</strong> directory which resides in the directory that hive was started from</p>
+                <p style="text-align: left;"><strong>Driver:</strong> manages life cycle of HiveQL query as it moves thru’ HIVE; also manages session handle and session statistics</p>
+                <p style="text-align: left;"><strong>Query compiler:</strong> Compiles HiveQL into a directed acyclic graph of map/reduce tasks</p>
+                <p style="text-align: left;"><strong>Execution engines:</strong> The component executes the tasks in proper dependency order; interacts with Hadoop</p>
+                <p style="text-align: left;"><strong>HiveServer:</strong> provides Thrift interface and JDBC/ODBC for integrating other applications.</p>
+                <p style="text-align: left;"><strong>Client components:</strong> CLI, web interface, jdbc/odbc inteface
+                Extensibility interface include SerDe, User Defined Functions and User Defined Aggregate Function.</p>
+        </div>
+
+        <div id="hiveRunMode" style="display:block;margin-top:-40px;"><br><br>
+            <h2>Hive – Run Modes</h2>
+            <p><strong>Starting Hive</strong></p>
+            <p>If you added $HIVE_HOME/bin to your PATH, you can just type hive to run the command.</p>
+            <div class="codebox">
+                <pre>
+$ cd $HIVE_HOME
+$ bin/hive
+                </pre>
+            </div>
+
+            <p>Hive history file=/tmp/myname/hive_job_log_myname_201201271126_1992326118.txt hive</p>
+            <div class="codebox">
+                <pre>
+&gt; CREATE TABLE x (a INT);
+OK
+Time taken: 3.543 seconds
+hive&gt; SELECT * FROM x;
+OK
+Time taken: 0.231 seconds
+hive&gt; SELECT *
+&gt; FROM x; OK
+Time taken: 0.072 seconds
+hive&gt; DROP TABLE x;
+OK
+Time taken: 0.834 seconds
+hive&gt; exit; $
+                </pre>
+            </div>
+
+            <p><strong>Local Mode Configuration</strong></p>
+            <p>Go to the $HIVE_HOME/conf directory. The curious may want to peek at the large hive-default.xml.template file, which shows the different configuration properties supported by Hive and their default values. Most of these properties you can safely ignore. Changes to your configuration are done by editing the hive-site.xml file. Create one if it doesn’t already exist.</p>
+            <p>Here is an example configuration file where we set several properties for local mode execution.</p>
+            <div class="codebox">
+                <pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt; &lt;configuration&gt;
+&lt;property&gt; &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt; &lt;value&gt;/home/me/hive/warehouse&lt;/value&gt; &lt;description&gt;
+Local or HDFS directory where Hive keeps table contents.
+&lt;/description&gt; &lt;/property&gt; &lt;property&gt;
+&lt;name&gt;hive.metastore.local&lt;/name&gt;
+&lt;value&gt;true&lt;/value&gt; &lt;description&gt;
+Use false if a production metastore server is used.
+&lt;/description&gt; &lt;/property&gt; &lt;property&gt;
+&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt; &lt;value&gt;jdbc:derby:;databaseName=/home/me/hive/metastore_db;create=true&lt;/value&gt; &lt;description&gt;
+The JDBC connection URL.
+&lt;/description&gt; &lt;/property&gt;
+&lt;/configuration&gt;
+                </pre>
+            </div>
+
+            <p><strong>Distributed and Pseudodistributed Mode Configuration</strong></p>
+            <p>In distributed mode, several services run in the cluster. The JobTracker manages jobs and the NameNode is the HDFS master. Worker nodes run individual job tasks, man- aged by a TaskTracker service on each node, and then hold blocks for files in the distributed filesystem, managed by DataNode services.</p>
+            <p>One Hive property you might want to configure is the top-level directory for table storage, which is specified by the property hive.metastore.warehouse.dir ohe default value for this property is /user/hive/warehouse in the Apache Hadoop and MapR distributions, which will be interpreted as a distributed filesystem path when Hadoop is configured for distributed or pseudodistributed mode. For Amazon Elastic MapReduce (EMR), the default value is /mnt/hive0M_N/warehouse when using Hive v0.M.N (e.g., /mnt/hive08_1/warehouse).</p>
+            <p>Specifying a different value here allows each user to define their own warehouse direc- tory, so they don’t affect other system users. Hence, each user might use the following statement to define their own warehouse directory:</p>
+            <div class="codebox">
+                <pre>
+set hive.metastore.warehouse.dir=/user/myname/hive/warehouse;
+                </pre>
+            </div>
+
+            <p><strong>Metastore Using JDBC</strong></p>
+            <p>Hive requires only one extra component that Hadoop does not already have; the metastore component. The metastore stores metadata such as table schema and parti- tion information that you specify when you run commands such as create table x…, or alter table y…, etc. Because multiple users and systems are likely to need concurrent access to the metastore, the default embedded database is not suitable for production.</p>
+            <p>Any JDBC-compliant database can be used for the metastore. In practice, most instal- lations of Hive use MySQL. We’ll discuss how to use MySQL. It is straightforward to adapt this information to other JDBC-compliant databases. For our MySQL configuration, we need to know the host and port the service is running on. We will assume db1.mydomain.pvt and port 3306, which is the standard MySQL port.</p>
+            <div class="codebox">
+                <pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt; &lt;configuration&gt;
+&lt;property&gt;
+&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt; &lt;value&gt;jdbc:mysql://db1.mydomain.pvt/hive_db?createDatabaseIfNotExist=true&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt; &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt; &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;
+&lt;/property&gt; &lt;property&gt;
+&lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;
+&lt;value&gt;database_user&lt;/value&gt; &lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;
+&lt;value&gt;database_pass&lt;/value&gt; &lt;/property&gt;
+&lt;/configuration&gt;
+                </pre>
+            </div>
+            <hr />
+        </div>
+
+        <div id="hiveBasic" style="display:block;margin-top:-40px;"><br><br>
+            <h2>Hive Basics</h2>
+            <h4>Primitive Data Types</h4>
+            <p>There are the usual built-in data types. As always, case is ignored.</p>
+            <table class="table table-dafault">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th colspan="2">Literal Syntax Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TINYINT</td>
+                        <td>1-byte signed integer</td>
+                        <td>20</td>
+                    </tr>
+
+                    <tr>
+                        <td>SMALLINT</td>
+                        <td>2-byte signed integer</td>
+                        <td>20</td>
+                    </tr>
+
+                    <tr>
+                        <td>INT</td>
+                        <td>4-byte signed integer</td>
+                        <td>20</td>
+                    </tr>
+
+                    <tr>
+                        <td>BIGINT</td>
+                        <td>8-byte signed integer</td>
+                        <td>20</td>
+                    </tr>
+
+                    <tr>
+                        <td>BOOLEAN</td>
+                        <td>TRUE | FALSE</td>
+                        <td>TRUE</td>
+                    </tr>
+
+                    <tr>
+                        <td>FLOAT</td>
+                        <td>4-byte single precision</td>
+                        <td>3.14159</td>
+                    </tr>
+
+                    <tr>
+                        <td>DOUBLE</td>
+                        <td>8-byte double precision</td>
+                        <td>3.14159</td>
+                    </tr>
+
+                    <tr>
+                        <td>STRING</td>
+                        <td>Sequence of characters. The character set can be specified.</td>
+                        <td>‘Now is the time’, “for all good men”</td>
+                    </tr>
+
+                    <tr>
+                        <td>TIMESTAMP</td>
+                        <td>Integer, float or string</td>
+                        <td>(Hive v0.8) 1327882394 (Unix epoch seconds), 1327882394.123456789 (Unix epoch seconds plus nanoseconds), and '2012-02-03 12:34:56.123456789' (JDBC-compliant java.sql.Timestamp format).</td>
+                    </tr>
+
+                    <tr>
+                        <td>BINARY</td>
+                        <td>Array of bytes</td>
+                        <td>(Hive v0.8) see discussion below.</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <p>Note that these types reflect the underlying types provided by Java.</p>
+            <p><strong>TIMESTAMP </strong>and <strong>BINARY </strong>are new to Hive v0.8.0. For Hive v0.7.X, use an integer value for the epoch seconds or use a <strong>STRING.</strong> </p>
+            <p>If you use the latter, it is best to use a sortable format like the example shown.</p>
+            <p>The <strong>BINARY</strong> type is a way of saying “ignore the rest of this record”; it is treated as a byte array without interpretation and with no built-in support for conversion to other types. Use it when you only care about the first few fields in a record, e.g.,</p>
+            <div class="codebox">
+                <pre>
+CREATE TABLE short (s STRING, i INT, b BINARY);  
+                </pre>
+            </div>
+
+            <p>When a query mentions a particular type, Hive will implicitly cast any integer type to a larger integer type, cast <strong>FLOAT</strong> to <strong>DOUBLE</strong>, and cast any integer type to <strong>DOUBLE</strong>, as needed.</p>
+            <p>You can also explicitly interpret a <strong>STRING</strong> as a number type using, for example, '3.14159' to <strong>DOUBLE.</strong></p>
+            <h4>Complex Data Types</h4>
+            <p>Hive supports columns that are structs, maps, and arrays. Note that the “literal syntax examples” are actually making calls to built-in functions.</p>
+            <table class="table table-default">
+                <thead>
+                    <tr>
+                        <th>TYPE</th>
+                        <th>DESCRIPTION</th>
+                        <th>LITERAL SYNTAX EXAMPLES</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>STRUCT</td>
+                        <td>Analogous to a C struct or an “object”. Fields can be accessed using the “dot” notation. For example, if a column name if of type STRUCT {first STRING; last STRING}, then the first name field can be referenced using name.first.</td>
+                        <td>struct('John', 'Doe')</td>
+                    </tr>
+
+                    <tr>
+                        <td>MAP</td>
+                        <td>A collection of key-value tuples, where the fields are accessed using array notation, e.g., [‘key’]. For example, if a column name is of type MAP with key->value pairs 'first'->'John' and 'last'->'Doe', then the last name can be referenced using name['last'].</td>
+                        <td>map('first', 'John', 'last', 'Doe')</td>
+                    </tr>
+
+                    <tr>
+                        <td>ARRAY</td>
+                        <td>Lists of the same type that are indexable using zero-based integers. For example, if a column name is of type ARRAY of strings with the value ['John', 'Doe'], then the second element can be referenced using name[1].</td>
+                        <td>array('John', 'Doe')</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <h4>File Formats</h4>
+            <p>Hive supports all the Hadoop file formats, plus Thrift encoding, as well as supporting pluggable SerDe (serializer/deserializer) classes to support custom formats. Hive defaults to the following record and field delimiters, all of which are non-printable control characters and all of which can be customized.</p>
+
+            <table class="table table-default">
+                <thead>
+                    <tr>
+                        <th>DELIMITER</th>
+                        <th>NAME</th>
+                        <th>USE</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>\n or \r</td>
+                        <td>Line feed or carraige return</td>
+                        <td>Records, i.e., one per line.</td>
+                    </tr>
+
+                    <tr>
+                        <td>^A</td>
+                        <td>Control-A (\001)</td>
+                        <td>Separates fields, e.g., the way commas are used in CSV files.</td>
+                    </tr>
+
+                    <tr>
+                        <td>^B</td>
+                        <td>Control-B (\002)</td>
+                        <td>Separates elements in the “collections” (STRUCT, MAP, and ARRAY)</td>
+                    </tr>
+
+                    <tr>
+                        <td>^C</td>
+                        <td>Control-C (\003)</td>
+                        <td>Separates the key and value in MAP elements.</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <p>All of these defaults can be customized when creating tables. See examples below.</p>
+            <p>There are several file formats supported by Hive. <strong>TEXTFILE</strong> is the easiest to use, but the least space efficient. Hadoop’s <strong>SEQUENCEFILE</strong> format is more space efficient. A related format is <strong>MAPFILE</strong> which adds an index to a <strong>SEQUENCEFILE</strong> for faster retrieval of particular records.</p>
+
+        </div>
+
+        <div id="hiveDataDefination" style="display:block;margin-top:-40px;"><br><br>
+            <h2>HiveQL-Data Definition</h2>
+            <p>HiveQL is the Hive query language. Like all SQL dialects in widespread use, it doesn’t fully conform to any particular revision of the ANSI SQL standard. Hive doesn’t support transactions. Hive adds ex-tensions to provide better performance in the context of Hadoop and to integrate with custom extensions and even external programs.</p>
+            <p><strong>Prerequisites</strong></p>
+            <p>Hadoop must be installed as per installation instructions <a href="">Hadoop version 2.0.3 installation</a>
+            Hive must be installed as per installation instructions <a href="#hive/run-modes/">Hive version 0.10.0 installation</a>
+            Load the dataset into HDFS using this <a href="">link</a>Tables Used In this tutorial</p>
+            <ol>
+                <li>Stocks</li>
+                <li>Employees</li>
+            </ol>
+            <p><strong>Create database</strong></p>
+            <p>They are very useful for larger clusters with multiple teams and users, as a way of avoiding table name collisions. It’s also common to use databases to organize production tables into logical groups. If you don’t specify a database, the default database is used.</p>
+            <div class="codebox">
+                <pre>
+hive&gt; CREATE DATABASE IF NOT EXISTS financials;
+                </pre>
+            </div>
+
+            <p>You can also use the keyword SCHEMA instead of DATABASE in all the database-related commands. At any time, you can see the databases that already exist as follows:</p>
+            <div class="codebox">
+                <pre>
+hive&gt; SHOW DATABASES;
+default
+financials
+
+hive&gt; CREATE DATABASE human_resources;
+
+hive&gt; SHOW DATABASES;
+default
+financials
+human_resources
+                </pre>
+            </div>
+
+            <p>you can restrict the ones listed using a regular expression.</p>
+            <div class="codebox">
+                <pre>
+hive&gt; SHOW DATABASES LIKE 'h.*';
+human_resources
+                </pre>
+            </div>
+
+            <p>DESCRIBE DATABASE shows the directory location for the database.</p>
+            <div class="codebox">
+                <pre>
+hive&gt; DESCRIBE DATABASE financials;
+
+hdfs://master-server/user/hive/warehouse/financials.db
+                </pre>
+            </div>
+
+            <p>Hive will create a directory for each database. Tables in that database will be stored in subdirectories of the database directory. The exception is tables in the default database, which doesn’t have its own directory. The database directory is created under a top-level directory specified by the property hive.metastore.warehouse.dir. Assuming you are using the default value for this property, /user/hive/warehouse, when the financials database is created, Hive will create the directory /user/hive/warehouse/financials.db. Note the .db extension.</p>
+            <p>You can override this default location for the new directory as shown in this example:</p>
+            <div class="codebox">
+                <pre>
+hive&gt; CREATE DATABASE financials
+&gt; LOCATION '/my/preferred/directory';
+                </pre>
+            </div>
+
+            <p>USE database</p>
+            <p>The USE command sets a database as your working database, analogous to changing working directories in a filesystem</p>
+            <div class="codebox">
+                <pre>
+hive&gt; USE financials;
+                </pre>
+            </div>
+
+            <p>We can set hive.cli.print.current.db property to print the current database as part of the prompt.</p>
+            <div class="codebox">
+                <pre>
+hive&gt; set hive.cli.print.current.db=true;
+
+hive (financials)&gt; USE default;
+
+hive (default)&gt; set hive.cli.print.current.db=false;
+                </pre>
+            </div>
+
+            <p>DROP database</p>
+            <p>you can drop a database:</p>
+            <div class="codebox">
+                <pre>
+hive&gt; DROP DATABASE IF EXISTS financials;
+                </pre>
+            </div>
+
+            <p>The IF EXISTS is optional and suppresses warnings if financials doesn’t exist. By default, Hive won’t permit you to drop a database if it contains tables. You can either drop the tables first or append the CASCADE keyword to the command, which will cause the Hive to drop the tables in the database first:</p>
+            <div class="codebox">
+                <pre>
+hive&gt; DROP DATABASE IF EXISTS financials CASCADE;
+                </pre>
+            </div>
+
+            <p>Alter Database</p>
+            <p>You can set key-value pairs in the DBPROPERTIES associated with a database using the ALTER DATABASE command. No other metadata about the database can be changed,including its name and directory location:</p>
+            <div class="codebox">
+                <pre>
+hive&gt; ALTER DATABASE financials SET DBPROPERTIES ('edited-by' = 'active steps');
+                </pre>
+            </div>
+
+            <p>There is no way to delete or “unset” a DBPROPERTY.</p>
+            <p>Create Tables</p>
+            <p>The CREATE TABLE statement follows SQL conventions, but Hive’s version offers sig- nificant extensions to support a wide range of flexibility where the data files for tables are stored, the formats used, etc.</p>
+            <p>Managed Tables</p>
+            <p>The tables we have created so far are called managed tables or sometimes called internal tables, because Hive controls the lifecycle of their data. As we’ve seen,Hive stores the data for these tables in subdirectory under the directory defined by hive.metastore.warehouse.dir (e.g., /user/hive/warehouse), by default.</p>
+            <p>When we drop a managed table, Hive deletes the data in the table.</p>
+            <p>Managed tables are less convenient for sharing with other tools</p>
+            <p>External Tables</p>
+            <div class="codebox">
+                <pre>
+CREATE EXTERNAL TABLE IF NOT EXISTS stocks (
+exchange STRING,
+symbol STRING,
+ymd STRING,
+price_open FLOAT,
+price_high FLOAT,
+price_low FLOAT,
+price_close FLOAT,
+volume INT,
+price_adj_close FLOAT
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/data/stocks/';
+                </pre>
+            </div>
+
+            <p>The EXTERNAL keyword tells Hive this table is external and the LOCATION … clause is required to tell Hive where it’s located. Because it’s external, Hive does not assume it owns the data. Therefore, dropping the table does not delete the data, although the metadata for the table will be deleted.</p>
+            <p>Partitioned, Managed Tables</p>
+            <p>Partitioned tables help to organize data in a logical fashion, such as hierarchically.</p>
+            <p>Example:Our HR people often run queries with WHERE clauses that restrict the results to a particular country or to a particular first-level subdivision (e.g., state in the United States or province in Canada).</p>
+            <p>we have to use address.state to project the value inside the address. So, let’s partition the data first by country and then by state:</p>
+            <div class="codebox">
+                <pre>
+CREATE TABLE IF NOT EXISTS mydb.employees (
+ name STRING,
+ salary FLOAT,
+ subordinates ARRAY&lt;STRING&gt;,
+ deductions MAP&lt;STRING, FLOAT&gt;,
+ address STRUCT&lt;street:STRING, city:STRING, state:STRING, zip:INT&gt;
+)
+PARTITIONED BY (country STRING, state STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '&#92;&#48;01'
+COLLECTION ITEMS TERMINATED BY '&#92;&#48;02'
+MAP KEYS TERMINATED BY '&#92;&#48;03'
+LINES TERMINATED BY '\n'
+STORED AS TEXTFILE;
+                </pre>
+            </div>
+
+            <p>Partitioning tables changes how Hive structures the data storage. If we create this table in the mydb database, there will still be an employees directory for the table:</p>
+            <div class="codebox">
+                <pre>
+LOAD DATA LOCAL INPATH '/path/to/employees.txt'
+INTO TABLE employees
+PARTITION (country = 'US', state = 'IL');
+hdfs://master_server/user/hive/warehouse/mydb.db/employees
+                </pre>
+            </div>
+
+            <p>However, Hive will now create subdirectories reflecting the partitioning structure. For example:</p>
+            <div class="codebox">
+                <pre>
+...
+.../employees/country=CA/state=AB
+.../employees/country=CA/state=BC
+...
+.../employees/country=US/state=AL
+.../employees/country=US/state=AK
+                </pre>
+            </div>
+
+            <p>Those are the actual directory names. The state directories will contain zero or more files for the employees in those states.</p>
+            <p>Once created, the partition keys (country and state, in this case) behave like regular columns.</p>
+            <div class="codebox">
+                <pre>
+hive (mydb)&gt; SHOW PARTITIONS employees;
+OK
+country=US/state=IL
+Time taken: 0.145 seconds
+hive (mydb)&gt; SELECT * FROM employees WHERE country ='US' AND state ='IL';
+OK
+John Doe 100000.0 [&quot;Mary Smith&quot;,&quot;Todd Jones&quot;] {&quot;Federal Taxes&quot;:0.2,&quot;State Taxes&quot;:0.05,&quot;Insurance&quot;:0.1} {&quot;street&quot;:&quot;1 Michigan Ave.&quot;,&quot;city&quot;:&quot;Chicago&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60600} US IL
+Mary Smith 80000.0 [&quot;Bill King&quot;] {&quot;Federal Taxes&quot;:0.2,&quot;State Taxes&quot;:0.05,&quot;Insurance&quot;:0.1} {&quot;street&quot;:&quot;100 Ontario St.&quot;,&quot;city&quot;:&quot;Chicago&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60601} US IL
+Todd Jones 70000.0 [] {&quot;Federal Taxes&quot;:0.15,&quot;State Taxes&quot;:0.03,&quot;Insurance&quot;:0.1} {&quot;street&quot;:&quot;200 Chicago Ave.&quot;,&quot;city&quot;:&quot;Oak Park&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60700} US IL
+Bill King 60000.0 [] {&quot;Federal Taxes&quot;:0.15,&quot;State Taxes&quot;:0.03,&quot;Insurance&quot;:0.1} {&quot;street&quot;:&quot;300 Obscure Dr.&quot;,&quot;city&quot;:&quot;Obscuria&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60100} US IL
+Boss Man 200000.0 [&quot;John Doe&quot;,&quot;Fred Finance&quot;] {&quot;Federal Taxes&quot;:0.3,&quot;State Taxes&quot;:0.07,&quot;Insurance&quot;:0.05} {&quot;street&quot;:&quot;1 Pretentious Drive.&quot;,&quot;city&quot;:&quot;Chicago&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60500} US IL
+Fred Finance 150000.0 [&quot;Stacy Accountant&quot;] {&quot;Federal Taxes&quot;:0.3,&quot;State Taxes&quot;:0.07,&quot;Insurance&quot;:0.05} {&quot;street&quot;:&quot;2 Pretentious Drive.&quot;,&quot;city&quot;:&quot;Chicago&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60500} US IL
+Stacy Accountant 60000.0 [] {&quot;Federal Taxes&quot;:0.15,&quot;State Taxes&quot;:0.03,&quot;Insurance&quot;:0.1} {&quot;street&quot;:&quot;300 Main St.&quot;,&quot;city&quot;:&quot;Naperville&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60563} US IL
+Time taken: 0.254 seconds
+                </pre>
+            </div>
+
+            <p>Partition limits the results to employees in Illinois, it is only necessary to scan the contents of one directory. Partitioning can dramatically improve query performance, but only if the partitioning scheme reflects common range filtering (e.g., by locations, timestamp ranges). When we add predicates to WHERE clauses that filter on partition values, these predicates are called partition filters.</p>
+            <p>Strict mode</p>
+            <p>A query across all partitions could trigger an enormous MapReduce job if the table data and number of partitions are large. A highly suggested safety measure is putting Hive into strict mode, which prohibits queries of partitioned tables without a WHERE clause that filters on partitions. You can set the mode to nonstrict, as in the following session:</p>
+            <div class="codebox">
+                <pre>
+hive&gt; set hive.mapred.mode=strict;
+hive&gt; SELECT e.name, e.salary FROM employees e LIMIT 100;
+FAILED: Error in semantic analysis: No partition predicate found for
+Alias &quot;e&quot; Table &quot;employees&quot;
+hive&gt; set hive.mapred.mode=nonstrict;
+hive&gt; SELECT e.name, e.salary FROM employees e LIMIT 100;
+                </pre>
+            </div>
+            <hr />
+
+        </div>
+
+        <div id="hiveQueriesPart1" style="display:block;margin-top:-40px;"><br><br>
+            <h2>Hive Queries – Part 1</h2>
+            <h3><strong>Prerequisites</strong></h3>
+            <ul>
+                <li>Hadoop must be installed as per installation instructions <a title="Single Node Installation" href="http://www.datascience-labs.com/hadoop/single-node-installation-2/" target="_blank">Hadoop version 2.0.3 installation</a></li>
+                <li>Hive must be installed as per installation instructions <a title="Hive-Installation" href="http://www.datascience-labs.com/hive/run-modes/" target="_blank">Hive version 0.10.0 installation</a></li>
+                </ul>
+
+                <ul>
+                    <li>Load the dataset into HDFS using this <a title="Dataset Load" href="http://www.datascience-labs.com/hive/dataset/" target="_blank">link</a></li>
+                </ul>
+                <h2 id="data-set-overview"><span style="line-height: 1.3;">Tables Used In this tutorial</span></h2>
+                <ol>
+                    <li>Employees</li>
+                </ol>
+                <h1 id="to-create-the-above-tables-run-the-following-ddl-queries">To create the above tables run the following ddl queries.</h1>
+                <p>Create employees</p>
+                <div class="codebox">
+                    <pre>
+CREATE EXTERNAL TABLE employees (
+ name STRING,
+ salary FLOAT,
+ subordinates ARRAY&lt;STRING&gt;,
+ deductions MAP&lt;STRING, FLOAT&gt;,
+ address STRUCT&lt;street:STRING, city:STRING, state:STRING, zip:INT&gt;
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '&#92;&#48;01'
+COLLECTION ITEMS TERMINATED BY '&#92;&#48;02'
+MAP KEYS TERMINATED BY '&#92;&#48;03'
+LINES TERMINATED BY '\n'
+STORED AS TEXTFILE
+LOCATION '/data/employees';
+                       
+                    </pre>
+                </div>
+
+                <p><strong>SELECT … FROM Clauses</strong></p>
+                <p>SELECT is the projection operator in SQL. The FROM clause identifies from which table, view, or nested query we select records</p>
+                <div class="codebox">
+                    <pre>
+hive&gt; SELECT name, salary FROM employees;
+John Doe
+100000.0
+Mary Smith 80000.0
+Todd Jones 70000.0
+Bill King 60000.0   
+                    </pre>
+                </div>
+
+<p>When you select columns that are one of the collection types, Hive uses JSON (Java- Script Object Notation) syntax for the output. First, let’s select the subordinates, an ARRAY, where a comma-separated list surrounded with […] is used. Note that STRING elements of the collection are quoted, while the primitive STRING name column is not</p>
+                <div class="codebox">
+                    <pre>
+hive&gt; SELECT name, subordinates FROM employees;
+John Doe
+[&quot;Mary Smith&quot;,&quot;Todd Jones&quot;]
+Mary Smith [&quot;Bill King&quot;]
+Todd Jones []
+Bill King [] 
+                    </pre>
+                </div>
+
+<p>The deductions is a MAP, where the JSON representation for maps is used, namely a comma-separated list of key:value pairs, surrounded with {…}:</p>
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, deductions FROM employees;
+John Doe
+{&quot;Federal Taxes&quot;:0.2,&quot;State Taxes&quot;:0.05,&quot;Insurance&quot;:0.1}
+Mary Smith {&quot;Federal Taxes&quot;:0.2,&quot;State Taxes&quot;:0.05,&quot;Insurance&quot;:0.1}
+Todd Jones {&quot;Federal Taxes&quot;:0.15,&quot;State Taxes&quot;:0.03,&quot;Insurance&quot;:0.1}
+Bill King {&quot;Federal Taxes&quot;:0.15,&quot;State Taxes&quot;:0.03,&quot;Insurance&quot;:0.1}
+Finally, the address is a STRUCT, which is also written using the JSON map format:                        
+                    </pre>
+                </div>
+
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, address FROM employees;
+John Doe
+{&quot;street&quot;:&quot;1 Michigan Ave.&quot;,&quot;city&quot;:&quot;Chicago&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60600}
+Mary Smith {&quot;street&quot;:&quot;100 Ontario St.&quot;,&quot;city&quot;:&quot;Chicago&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60601}
+Todd Jones {&quot;street&quot;:&quot;200 Chicago Ave.&quot;,&quot;city&quot;:&quot;Oak Park&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60700}
+Bill King {&quot;street&quot;:&quot;300 Obscure Dr.&quot;,&quot;city&quot;:&quot;Obscuria&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:60100}
+                        
+                    </pre>
+                </div>
+
+<p>Next, let’s see how to reference elements of collections. First, ARRAY indexing is 0-based, as in Java. Here is a query that selects the first element of the subordinates array:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, subordinates[0] FROM employees;
+John Doe
+Mary Smith
+Mary Smith Bill King
+Todd Jones NULL
+Bill King NULL
+                        
+                    </pre>
+                </div>
+
+<p>Note that referencing a nonexistent element returns NULL. Also, the extracted STRING values are no longer quoted! To reference a MAP element, you also use ARRAY[…] syntax, but with key values instead of integer indices:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, deductions[&quot;State Taxes&quot;] FROM employees;
+John Doe
+0.05
+Mary Smith 0.05
+Todd Jones 0.03
+Bill King 0.03                        
+                    </pre>
+                </div>
+
+<p>Finally, to reference an element in a STRUCT, you use dot notation, similar to the table_alias.column mentioned above:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, address.city FROM employees;
+John Doe
+Chicago
+Mary Smith Chicago
+Todd Jones Oak Park
+Bill King Obscuri
+LIMIT Clause                        
+                    </pre>
+                </div>
+
+<p>The results of a typical query can return a large number of rows. The LIMIT clause puts an upper limit on the number of rows returned:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT upper(name), salary, deductions[&quot;Federal Taxes&quot;],
+&gt; round(salary * (1 - deductions[&quot;Federal Taxes&quot;])) FROM employees
+&gt; LIMIT 2;
+JOHN DOE 100000.0 0.2 80000
+MARY SMITH 80000.0 0.2 64000                        
+                    </pre>
+                </div>
+
+<p><strong>Column Aliases</strong></p>
+<p>You can think of the previous example query as returning a new relation with new columns, some of which are anonymous results of manipulating columns in employees. It’s sometimes useful to give those anonymous columns a name, called a column alias. Here is the previous query with column aliases for the third and fourth columns returned by the query, fed_taxes and salary_minus_fed_taxes, respectively:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT upper(name), salary, deductions[&quot;Federal Taxes&quot;] as fed_taxes,
+&gt; round(salary * (1 - deductions[&quot;Federal Taxes&quot;])) as salary_minus_fed_taxes
+&gt; FROM employees LIMIT 2;
+
+JOHN DOE 100000.0 0.2 80000
+MARY SMITH 80000.0 0.2 64000
+                        
+                    </pre>
+                </div>
+
+<p><strong>Nested SELECT Statements</strong></p>
+<p>The column alias feature is especially useful in nested select statements. Let’s use the previous example as a nested query:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; FROM (
+&gt; SELECT upper(name), salary, deductions[&quot;Federal Taxes&quot;] as fed_taxes,
+&gt; round(salary * (1 - deductions[&quot;Federal Taxes&quot;])) as salary_minus_fed_taxes
+&gt; FROM employees
+&gt; ) e
+&gt; SELECT e.name, e.salary_minus_fed_taxes
+&gt; WHERE e.salary_minus_fed_taxes &gt; 70000;
+JOHN DOE 100000.0 0.2 80000
+                        
+                    </pre>
+                </div>
+
+<p>The previous result set is aliased as e, from which we perform a second query to select the name and the salary_minus_fed_taxes, where the latter is greater than 70,000.</p>
+<p><strong>CASE … WHEN … THEN Statements</strong></p>
+<p>The CASE … WHEN … THEN clauses are like if statements for individual columns in query results. For example:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, salary,
+&gt; CASE
+&gt;
+WHEN salary &lt; 50000.0 THEN 'low'
+&gt;
+WHEN salary &gt;= 50000.0 AND salary &lt; 70000.0 THEN 'middle'
+&gt;
+WHEN salary &gt;= 70000.0 AND salary &lt; 100000.0 THEN 'high'
+&gt;
+ELSE 'very high'
+&gt;
+END AS bracket FROM employees;
+John Doe 100000.0 very high
+Mary Smith 80000.0 high
+Todd Jones 70000.0 high
+Bill King 60000.0 middle
+Boss Man 200000.0 very high
+Fred Finance 150000.0 very high
+Stacy Accountant 60000.0 middle
+...                        
+                    </pre>
+                </div>
+
+<p><strong>WHERE Clauses</strong></p>
+<p><strong></strong>WHERE clauses are filters; they select which records to return.WHERE clauses use predicate expressions, applying predicate operators</p>
+<p>The predicates can reference the same variety of computations over column values that can be used in SELECT clauses. Here we adapt our previously used query involving Federal Taxes, filtering for those rows where the salary minus the federal taxes is greater than 70,000:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, salary, deductions[&quot;Federal Taxes&quot;],
+&gt; salary * (1 - deductions[&quot;Federal Taxes&quot;])
+&gt; FROM employees
+&gt; WHERE round(salary * (1 - deductions[&quot;Federal Taxes&quot;])) &gt; 70000;
+John Doe 100000.0 0.2 80000.0
+                        
+                    </pre>
+                </div>
+
+<p>This query is a bit ugly, because the complex expression on the second line is duplicated in the WHERE clause. The following variation eliminates the duplication, using a column alias, but unfortunately it’s not valid:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, salary, deductions[&quot;Federal Taxes&quot;],
+&gt;
+salary * (1 - deductions[&quot;Federal Taxes&quot;]) as salary_minus_fed_taxes
+&gt; FROM employees
+&gt; WHERE round(salary_minus_fed_taxes) &gt; 70000;
+FAILED: Error in semantic analysis: Line 4:13 Invalid table alias or
+column reference 'salary_minus_fed_taxes': (possible column names are:
+name, salary, subordinates, deductions, address)                        
+                    </pre>
+                </div>
+
+<p>As the error message says, we can’t reference column aliases in the WHERE clause. How- ever, we can use a nested SELECT statement:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT e.* FROM
+&gt; (SELECT name, salary, deductions[&quot;Federal Taxes&quot;] as ded,
+&gt;
+salary * (1 - deductions[&quot;Federal Taxes&quot;]) as salary_minus_fed_taxes
+&gt; FROM employees) e
+&gt; WHERE round(e.salary_minus_fed_taxes) &gt; 70000;
+
+John Doe 100000.0 0.2 80000.0
+Boss Man 200000.0 0.3 140000.0
+Fred Finance 150000.0 0.3 105000.0
+                        
+                    </pre>
+                </div>
+
+<p><strong>LIKE and RLIKE</strong></p>
+<p>You have probably seen LIKE before, a standard SQL operator. For example, the following three queries select the employee names and addresses where the street ends with Ave., the city begins with O, and the street contains Chicago:</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, address.street FROM employees WHERE address.street LIKE '%Ave.';
+John Doe 1 Michigan Ave.
+Todd Jones 200 Chicago Ave.
+                        
+                    </pre>
+                </div>
+
+
+                <div class="codebox">
+                    <pre>
+hive&gt; SELECT name, address.city FROM employees WHERE address.city LIKE 'O%';
+Todd Jones Oak Park
+Bill King Obscuria                        
+                    </pre>
+                </div>
+
+
+
+                <div class="codebox">
+                    <pre>
+hive&gt; SELECT name, address.street FROM employees WHERE address.street LIKE '%Chi%';
+Todd Jones 200 Chicago Ave.
+                        
+                    </pre>
+                </div>
+
+<p>A Hive extension is the RLIKE clause, which lets us use Java regular expressions, a more powerful minilanguage for specifying matches.</p>
+
+                <div class="codebox">
+                    <pre>
+
+hive&gt; SELECT name, address.street
+&gt; FROM employees WHERE address.street RLIKE '.*(Chicago|Ontario).*';
+
+Mary Smith 100 Ontario St.
+Todd Jones 200 Chicago Ave.
+                        
+                    </pre>
+                </div>
+
+<p>The string after the RLIKE keyword has the following interpretation. A period . matches any character and a star * means repeat the “thing to the left” (period, in the two cases shown) zero to many times. The expression x|y means match either x or y. Hence, there might be no characters before “Chicago” or “Ontario” and there might be no characters after them. Of course, we could have written this particular example with two LIKE clauses:</p>
+
+                <div class="codebox">
+                    <pre>
+SELECT name, address FROM employees
+WHERE address.street LIKE '%Chicago%' OR address.street LIKE '%Ontario%';
+                        
+                    </pre>
+                </div>
+
+<p>General regular expression matches will let us express much richer matching criteria that would become very unwieldy with joined LIKE clauses such as these.</p>
+    
+        </div>
+
+        <div id="hiveQueriesPart2" style="display:block;margin-top:-40px;"><br><br>
+            <h2>Hive Queries – Part 2</h2>
+            <p>Hive supports the classic SQL JOIN statement, but only equi-joins are supported.</p>
+            <h2 id="prerequisites">Prerequisites</h2>
+            <ul>
+                <li>Hadoop must be installed as per installation instructions <a>Hadoop version 2.0.3 installation</a></li>
+                <li>Hive must be installed as per installation instructions <a>Hive version 0.10.1 installation</a></li>
+            </ul>
+
+            <ul>
+                <li>Load the dataset into HDFS using this <a title="Dataset Load" href="http://www.datascience-labs.com/hive/dataset/" target="_blank">link</a></li>
+            </ul>
+            <h2>Data set overview</h2>
+            <p>Historical NYSE stock data from 1970 – 2010, including daily open, close, low, high and trading volume figures. Data is organized alphabetically by ticker symbol.</p>
+            <h2>Tables Used In this tutorial</h2>
+            <ol>
+                <li>Dividends</li>
+                <li>Stocks</li>
+                <li>Employees</li>
+            </ol>
+            <h3>To create the above tables run the following ddl queries.</h3>
+            <p>Create stocks</p>
+            <div class="codebox">
+                <pre>
+
+CREATE EXTERNAL TABLE IF NOT EXISTS stocks (
+exchange STRING,
+symbol STRING,
+ymd STRING,
+price_open FLOAT,
+price_high FLOAT,
+price_low FLOAT,
+price_close FLOAT,
+volume INT,
+price_adj_close FLOAT)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/data/stocks/';
+Queries on Sotck Data Set
+
+                </pre>
+            </div>
+
+            <p><strong>Load the stocks</strong></p>
+            <div class="codebox">
+                <pre>
+
+LOAD DATA LOCAL INPATH '/Users/reddyraja/soft/Hive-Demo/data/stocks/input/plain-text/NASDAQ/AAPL/stocks.csv'
+INTO TABLE stocks
+PARTITION (exchange = 'NASDAQ', symbol = 'AAPL');
+
+                </pre>
+            </div>
+
+            <p>Load the stocks</p>
+            <div class="codebox">
+                <pre>
+
+LOAD DATA LOCAL INPATH '/Users/reddyraja/soft/Hive-Demo/data/stocks/input/plain-text/NASDAQ/INTC/stocks.csv'
+INTO TABLE stocks
+PARTITION (exchange = 'NASDAQ', symbol = 'INTC');
+
+                </pre>
+            </div>
+
+<p><strong>Load the stocks</strong></p>
+            <div class="codebox">
+                <pre>
+
+LOAD DATA LOCAL INPATH '/Users/reddyraja/soft/Hive-Demo/data/stocks/input/plain-text/NYSE/GE/stocks.csv'
+INTO TABLE stocks
+PARTITION (exchange = 'NYSE', symbol = 'GE');
+
+                </pre>
+            </div>
+
+            <p><strong>Load the stocks</strong></p>
+            <div class="codebox">
+                <pre>
+
+LOAD DATA LOCAL INPATH '/Users/reddyraja/soft/Hive-Demo/data/stocks/input/plain-text/NYSE/IBM/stocks.csv'
+INTO TABLE stocks
+PARTITION (exchange = 'NYSE', symbol = 'IBM');
+
+                </pre>
+            </div>
+
+            <p>Queries on Stocks Table</p>
+            <div class="codebox">
+                <pre>
+
+SELECT * FROM stocks WHERE exchange = 'NASDAQ' AND symbol = 'AAPL' LIMIT 10;
+SELECT ymd, price_close FROM stocks WHERE exchange = 'NASDAQ' AND symbol = 'AAPL' LIMIT 10;
+SELECT ymd, price_open, price_close
+FROM stocks WHERE symbol = 'AAPL' AND exchange = 'NASDAQ' LIMIT 20;
+SELECT count(*) FROM stocks
+WHERE symbol = 'AAPL' AND exchange = 'NASDAQ';
+Average the closing price for AAPL: ($51.75)
+
+                </pre>
+            </div>
+
+            <div class="codebox">
+                <pre>
+
+SELECT avg(price_close) FROM stocks
+ WHERE symbol = 'AAPL' AND exchange = 'NASDAQ';
+ SELECT year(ymd), avg(price_close)
+ FROM stocks
+ WHERE symbol = 'AAPL' AND exchange = 'NASDAQ'
+ GROUP BY year(ymd);
+                </pre>
+            </div>
+
+            <p>GROUP BY &#8230; HAVING is a way of further filtering the output.</p>
+            <div class="codebox">
+                <pre>
+
+SELECT year(ymd), avg(price_close)
+ FROM stocks
+ WHERE symbol = 'AAPL' AND exchange = 'NASDAQ'
+ GROUP BY year(ymd)
+ HAVING avg(price_close) &gt; 50.0 AND avg(price_close) &lt; 100.0;
+
+                </pre>
+            </div>
+
+            <p><strong>Dividends</strong></p>
+            <p><strong>Create dividends</strong></p>
+            <div class="codebox">
+                <pre>
+
+CREATE TABLE IF NOT EXISTS dividends (
+ ymd STRING,
+ dividend FLOAT
+ )
+ PARTITIONED BY (exchange STRING, symbol STRING)
+ ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ LOCATION '/data/dividends';
+
+                </pre>
+            </div>
+
+            <p><strong>Load Dividend Data</strong></p>
+            <div class="codebox">
+                <pre>
+
+LOAD DATA LOCAL INPATH '/path/to/data/dividends/input/plain-text/NASDAQ/AAPL/dividends.csv'
+ INTO TABLE DIVIDENDS
+ PARTITION (exchange = 'NASDAQ', symbol = 'AAPL');
+ LOAD DATA LOCAL INPATH '/path/to/data/dividends/input/plain-text/NASDAQ/INTC/dividends.csv'
+ INTO TABLE DIVIDENDS
+ PARTITION (exchange = 'NASDAQ', symbol = 'INTC');
+ LOAD DATA LOCAL INPATH '/path/to/data/dividends/input/plain-text/NYSE/GE/dividends.csv'
+ INTO TABLE DIVIDENDS
+ PARTITION (exchange = 'NYSE', symbol = 'GE');
+ LOAD DATA LOCAL INPATH '/path/to/data/dividends/input/plain-text/NYSE/IBM/dividends.csv'
+ INTO TABLE DIVIDENDS
+ PARTITION (exchange = 'NYSE', symbol = 'IBM');
+
+                </pre>
+            </div>
+            <p><strong>Queries on Dividends</strong></p>
+            <p>display 10 records of dividends table</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; SELECT * FROM dividends LIMIT 10;
+ display 10 records of stocks table
+
+hive&gt; SELECT * FROM stocks LIMIT 10;
+ Inner JOIN
+
+                </pre>
+            </div>
+
+            <p>In an inner JOIN, records are discarded unless join criteria finds matching records in every table being joined. For example, the following query compares Apple (symbol AAPL) and IBM (symbol IBM). The stocks table is joined against itself, a self-join, where the dates, ymd (year-month-day) values must be equal in both tables. We say that the ymd columns are the join keys in this query:</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; SELECT a.ymd, a.price_close, b.price_close
+ &gt; FROM stocks a JOIN stocks b ON a.ymd = b.ymd
+ &gt; WHERE a.symbol = 'AAPL' AND b.symbol = 'IBM';
+ 2010-01-04 214.01 132.45
+ 2010-01-05 214.38 130.85
+ 2010-01-06 210.97 130.0
+ 2010-01-07 210.58 129.55
+ 2010-01-08 211.98 130.85
+ 2010-01-11 210.11 129.48
+ ...
+
+                </pre>
+            </div>
+
+            <p>The ON clause specifies the conditions for joining records between the two tables. The WHERE clause limits the lefthand table to AAPL records and the righthand table to IBM records. You can also see that using table aliases for the two occurrences of stocks is essential in this query.</p>
+            <p>As you may know, IBM is an older company than Apple. It has been a publicly traded stock for much longer than Apple. However, since this is an inner JOIN, no IBM records will be returned older than September 7, 1984, which was the first day that Apple was publicly traded!</p>
+            <p>Standard SQL allows a non-equi-join on the join keys, such as the following example that shows Apple versus IBM, but with all older records for Apple paired up with each day of IBM data. It would be a lot of data</p>
+            <div class="codebox">
+                <pre>
+
+SELECT a.ymd, a.price_close, b.price_close
+ FROM stocks a JOIN stocks b
+ ON a.ymd &lt;= b.ymd
+ WHERE a.symbol = 'AAPL' AND b.symbol = 'IBM';
+
+                </pre>
+            </div>
+
+            <p>This is not valid in Hive, primarily because it is difficult to implement these kinds of joins in MapReduce. Also, Hive does not currently support using OR between predicates in ON clauses.</p>
+            <p>Here is an inner JOIN between stocks and dividends for Apple, where we use the ymd and symbol columns as join keys:</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; SELECT s.ymd, s.symbol, s.price_close, d.dividend
+ &gt; FROM stocks s JOIN dividends d ON s.ymd = d.ymd AND s.symbol = d.symbol
+ &gt; WHERE s.symbol = 'AAPL';
+ 1987-05-11 AAPL 77.0 0.015
+ 1987-08-10 AAPL 48.25 0.015
+ 1987-11-17 AAPL 35.0 0.02
+ ...
+ 1995-02-13 AAPL 43.75 0.03
+ 1995-05-26 AAPL 42.69 0.03
+ 1995-08-16 AAPL 44.5 0.03
+ 1995-11-21 AAPL 38.63 0.03
+
+                </pre>
+            </div>
+
+            <p>You can join more than two tables together. Let’s compare Apple, IBM, and GE side by side:</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; SELECT a.ymd, a.price_close, b.price_close , c.price_close
+ &gt; FROM stocks a JOIN stocks b ON a.ymd = b.ymd
+ &gt;
+ JOIN stocks c ON a.ymd = c.ymd
+ &gt; WHERE a.symbol = 'AAPL' AND b.symbol = 'IBM' AND c.symbol = 'GE';
+ 2010-01-04
+ 214.01 132.45 15.45
+ 2010-01-05
+ 214.38 130.85 15.53
+ 2010-01-06
+ 210.97 130.0
+ 15.45
+ 2010-01-07
+ 210.58 129.55 16.25
+ 2010-01-08
+ 211.98 130.85 16.6
+ 2010-01-11
+ 210.11 129.48 16.76
+ ...
+
+                </pre>
+            </div>
+
+            <p>Most of the time, Hive will use a separate MapReduce job for each pair of things to join. In this example, it would use one job for tables a and b, then a second job to join the output of the first join with c.</p>
+            <p><strong>Join Optimizations</strong></p>
+            <p>When joining three or more tables, if every ON clause uses the same join key, a single MapReduce job will be used.</p>
+            <p>Hive also assumes that the last table in the query is the largest. It attempts to buffer the other tables and then stream the last table through, while performing joins on individual records. Therefore, you should structure your join queries so the largest table is last. Recall our previous join between stocks and dividends. We actually made the mistake of using the smaller dividends table last:</p>
+            <div class="codebox">
+                <pre>
+
+SELECT s.ymd, s.symbol, s.price_close, d.dividend
+ FROM stocks s JOIN dividends d ON s.ymd = d.ymd AND s.symbol = d.symbol
+ WHERE s.symbol = 'AAPL';
+ We should switch the positions of stocks and dividends:
+
+SELECT s.ymd, s.symbol, s.price_close, d.dividend
+ FROM dividends d JOIN stocks s ON s.ymd = d.ymd AND s.symbol = d.symbol
+ WHERE s.symbol = 'AAPL';
+
+                </pre>
+            </div>
+
+            <p>Fortunately, you don’t have to put the largest table last in the query. Hive also provides a “hint” mechanism to tell the query optimizer which table should be streamed:</p>
+            <div class="codebox">
+                <pre>
+
+SELECT /*+ STREAMTABLE(s) */ s.ymd, s.symbol, s.price_close, d.dividend
+ FROM stocks s JOIN dividends d ON s.ymd = d.ymd AND s.symbol = d.symbol
+ WHERE s.symbol = 'AAPL';
+
+                </pre>
+            </div>
+
+            <p>Now Hive will attempt to stream the stocks table, even though it’s not the last table in the query.</p>
+            <p><strong>LEFT OUTER JOIN</strong></p>
+            <p>The left-outer join is indicated by adding the LEFT OUTER keywords:</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; SELECT s.ymd, s.symbol, s.price_close, d.dividend
+ &gt; FROM stocks s LEFT OUTER JOIN dividends d ON s.ymd = d.ymd AND s.symbol = d.symbol
+ &gt; WHERE s.symbol = 'AAPL';
+ ...
+ 1987-05-01 AAPL 80.0 NULL
+ 1987-05-04 AAPL 79.75 NULL
+ 1987-05-05 AAPL 80.25 NULL
+ 1987-05-06 AAPL 80.0 NULL
+ 1987-05-07 AAPL 80.25 NULL
+ 1987-05-08 AAPL 79.0 NULL
+ 1987-05-11 AAPL 77.0 0.015
+ 1987-05-12 AAPL 75.5 NULL
+ 1987-05-13 AAPL 78.5 NULL
+ 1987-05-14 AAPL 79.25 NULL
+ 1987-05-15 AAPL 78.25 NULL
+ 1987-05-18 AAPL 75.75 NULL
+ 1987-05-19 AAPL 73.25 NULL
+ 1987-05-20 AAPL 74.5 NULL
+ ...
+
+                </pre>
+            </div>
+
+            <p>In this join, all the records from the lefthand table that match the WHERE clause are returned. If the righthand table doesn’t have a record that matches the ON criteria, NULL is used for each column selected from the righthand table. Hence, in this result set, we see that the every Apple stock record is returned and the d.dividend value is usually NULL, except on days when a dividend was paid (May 11th, 1987, in this output).</p>
+            <p><strong>OUTER JOIN Gotcha</strong></p>
+            <p><strong>RIGHT OUTER JOIN</strong></p>
+            <p>Right-outer joins return all records in the righthand table that match the WHERE clause. NULL is used for fields of missing records in the lefthand table. Here we switch the places of stocks and dividends and perform a righthand join, but leave the SELECT statement unchanged:</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; SELECT s.ymd, s.symbol, s.price_close, d.dividend
+ &gt; FROM dividends d RIGHT OUTER JOIN stocks s ON d.ymd = s.ymd AND d.symbol = s.symbol
+ &gt; WHERE s.symbol = 'AAPL';
+ ...
+ 1987-05-07 AAPL 80.25 NULL
+ 1987-05-08 AAPL 79.0 NULL
+ 1987-05-11 AAPL 77.0 0.015
+ 1987-05-12 AAPL 75.5 NULL
+ 1987-05-13 AAPL 78.5 NULL
+ ...
+
+                </pre>
+            </div>
+
+            <p><strong>LEFT SEMI-JOIN</strong></p>
+            <p>A left semi-join returns records from the lefthand table if records are found in the right- hand table that satisfy the ON predicates. It’s a special, optimized case of the more general inner join. Most SQL dialects support an IN … EXISTS construct to do the same thing. For instance, the following query in Example 6-2 attempts to return stock records only on the days of dividend payments, but it doesn’t work in Hive. Example 6-2. Query that will not work in Hive SELECT s.ymd, s.symbol, s.price_close FROM stocks s WHERE s.ymd, s.symbol IN (SELECT d.ymd, d.symbol FROM dividends d); Instead, you use the following LEFT SEMI JOIN syntax:</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; SELECT s.ymd, s.symbol, s.price_close
+ &gt; FROM stocks s LEFT SEMI JOIN dividends d ON s.ymd = d.ymd AND s.symbol = d.symbol;
+ ...
+ 1962-11-05 IBM 361.5
+ 1962-08-07 IBM 373.25
+ 1962-05-08 IBM 459.5
+ 1962-02-06 IBM 551.5
+
+                </pre>
+            </div>
+
+            <p>Note that the SELECT and WHERE clauses can’t reference columns from the righthand table.</p>
+            <p>The reason semi-joins are more efficient than the more general inner join is as follows. For a given record in the lefthand table, Hive can stop looking for matching records in the righthand table as soon as any match is found. At that point, the selected columns from the lefthand table record can be projected.</p>
+            <p><strong>Cartesian Product JOINs</strong></p>
+            <p>A Cartesian product is a join where all the tuples in the left side of the join are paired with all the tuples of the right table. If the left table has 5 rows and the right table has 6 rows, 30 rows of output will be produced:</p>
+            <div class="codebox">
+                <pre>
+
+SELECT * FROM stocks JOIN dividends;
+
+                </pre>
+            </div>
+
+            <p>Cartesian products create a lot of data. Unlike other join types, Cartesian products are not executed in parallel, and they are not optimized in any way using MapReduce.</p>
+            <p><strong>Map-side Joins</strong></p>
+            <p>If all but one table is small, the largest table can be streamed through the mappers while the small tables are cached in memory. Hive can do all the joining map-side, since it can look up every possible match against the small tables in memory, thereby eliminating the reduce step required in the more common join scenarios.</p>
+            <p>The joins between stocks and dividends can exploit this optimization, as the dividends data set is small enough to be cached.</p>
+            <p>set hive.auto.convert.join, to true before Hive will attempt the optimization. It’s false by default:</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; set hive.auto.convert.join=true;
+ hive&gt; SELECT s.ymd, s.symbol, s.price_close, d.dividend
+ &gt; FROM stocks s JOIN dividends d ON s.ymd = d.ymd AND s.symbol = d.symbol
+ &gt; WHERE s.symbol = 'AAPL';
+
+                </pre>
+            </div>
+
+            <p>Note that you can also configure the threshold size for table files considered small enough to use this optimization.</p>
+            <p>Hive does not support the optimization for right- and full-outer joins.</p>
+            <p>Map-side joins can be done on big tables when data for every table is bucketed.</p>
+            <p>Map-side join can be enabled by setting the property</p>
+            <div class="codebox">
+                <pre>
+
+hive.optimize.bucketmapjoin: set hive.optimize.bucketmapjoin=true;
+
+                </pre>
+            </div>
+
+            <p>If the bucketed tables actually have the same number of buckets and the data is sorted by the join/bucket keys, then Hive can perform an even faster sort-merge join. Once again, properties must be set to enable the optimization:</p>
+            <p>set hive.input.format=org.apache.hadoop.hive.ql.io.BucketizedHiveInputFormat set hive.optimize.bucketmapjoin=true set hive.optimize.bucketmapjoin.sortedmerge=true</p>
+            <p><strong>ORDER BY and SORT BY</strong></p>
+            <p>ORDER BY performs a total ordering of the query result set. This means that all the data is passed through a single reducer, which may take an unacceptably long time to execute for larger data sets.</p>
+            <p>Hive adds an alternative, SORT BY, that orders the data only within each reducer, thereby performing a local ordering, where each reducer’s output will be sorted. Better perfor- mance is traded for total ordering. In both cases, the syntax differs only by the use of the ORDER or SORT keyword. You can specify any columns you wish and specify whether or not the columns are ascending using the ASC keyword (the default) or descending using the DESC keyword. Here is an example using ORDER BY:</p>
+            <div class="codebox">
+                <pre>
+
+SELECT s.ymd, s.symbol, s.price_close
+ FROM stocks s
+ ORDER BY s.ymd ASC, s.symbol DESC;
+
+                </pre>
+            </div>
+
+            <p>Here is the same example using <strong>SORT BY</strong> instead:</p>
+            <div class="codebox">
+                <pre>
+
+SELECT s.ymd, s.symbol, s.price_close
+ FROM stocks s
+ SORT BY s.ymd ASC, s.symbol DESC;
+
+                </pre>
+            </div>
+
+            <p>The two queries look almost identical, but if more than one reducer is invoked, the output will be sorted differently. While each reducer’s output files will be sorted, the data will probably overlap with the output of other reducers. Because<strong> ORDER BY</strong> can result in excessively long run times, Hive will require a <strong>LIMIT</strong> clause with <strong>ORDER BY</strong> if the property <strong>hive.mapred.mode</strong> is set to strict. By default, it is set to nonstrict.</p>
+            <p><strong>DISTRIBUTE BY with SORT BY</strong></p>
+            <p><strong>DISTRIBUTE BY</strong> controls how map output is divided among reducers. All data that flows through a MapReduce job is organized into key-value pairs.MapReduce computes a hash on the keys output by mappers and tries to evenly distribute the key-value pairs among the available reducers using the hash values. this means that when we use SORT BY, the contents of one reducer’s output will overlap significantly with the output of the other reducers, as far as sorted order is concerned, even though the data is sorted within each reducer’s output.</p>
+            <p>Say we want the data for each stock symbol to be captured together. We can use<strong> DISTRIBUTE BY</strong> to ensure that the records for each stock symbol go to the same reducer, then use <strong>SORT BY</strong> to order the data the way we want. The following query demonstrates this technique:</p>
+            <div class="codebox">
+                <pre>
+
+hive&gt; SELECT s.ymd, s.symbol, s.price_close
+ &gt; FROM stocks s
+ &gt; DISTRIBUTE BY s.symbol
+ &gt; SORT BY s.symbol ASC, s.ymd ASC;
+ 1984-09-07 AAPL 26.5
+ 1984-09-10 AAPL 26.37
+ 1984-09-11 AAPL 26.87
+ 1984-09-12 AAPL 26.12
+ 1984-09-13 AAPL 27.5
+ 1984-09-14 AAPL 27.87
+ 1984-09-17 AAPL 28.62
+ 1984-09-18 AAPL 27.62
+ 1984-09-19 AAPL 27.0
+ 1984-09-20 AAPL 27.12
+ ...
+
+                </pre>
+            </div>
+
+            <p><strong>DISTRIBUTE BY</strong> works similar to <strong>GROUP BY</strong> in the sense that it controls how reducers receive rows for processing, while <strong>SORT BY</strong> controls the sorting of data inside the reducer.</p>
+
+        </div><!--/hiveQueriesPart2-->
+
 
             </div>
         </div>

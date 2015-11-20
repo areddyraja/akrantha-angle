@@ -5,6 +5,9 @@ a.navbar-brand img{
 	height:40px;
 	margin-top:-14px;
 }
+p{
+        text-align: justify;
+}
 footer p{
 	margin: 0px;
 }
